@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "992749599999",
+    "project_id": "stock-simulator-b2110",
+    "storage_bucket": "stock-simulator-b2110.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:992749599999:android:61f7c73051cd2569b9a0ca",
+        "android_client_info": {
+          "package_name": "com.example.stocksimulator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "992749599999-k7jb02q3279kpsikcf262d5tmguscocv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyhE5sXxcBZNdsVjc7gPQYCfwNw2usIGs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "992749599999-k7jb02q3279kpsikcf262d5tmguscocv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
