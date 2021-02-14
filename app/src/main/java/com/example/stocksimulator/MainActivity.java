@@ -1,16 +1,24 @@
 package com.example.stocksimulator;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.material.navigation.NavigationView;
+
 public class MainActivity extends AppCompatActivity {
 
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
     Toolbar toolbar;
     TextView txtBalance, txtDiff, txtDate;
     Button btnInvest;
@@ -22,6 +30,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initViews();
         setSupportActionBar(toolbar);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.nav_open_drawer, R.string.nav_close_drawer) {
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                this.setDrawerIndicatorEnabled(true);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                this.setDrawerIndicatorEnabled(false);
+            }
+        };
+
+
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        rvHistory.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        rvHistory.setAdapter(new HistoryAdapter());
+
+
     }
 
     @Override
@@ -39,5 +68,7 @@ public class MainActivity extends AppCompatActivity {
         txtDate = findViewById(R.id.txtDate);
         btnInvest = findViewById(R.id.btnInvest);
         rvHistory = findViewById(R.id.rvHistory);
+        drawerLayout = findViewById(R.id.drawerLayout);
+        navigationView = findViewById(R.id.navigation);
     }
 }
