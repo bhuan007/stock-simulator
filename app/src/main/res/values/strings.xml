@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Stock Simulator</string>
+    <string name="nav_open_drawer">Open Nav Drawer</string>
+    <string name="nav_close_drawer">Close Nav Drawer</string>
 </resources>
