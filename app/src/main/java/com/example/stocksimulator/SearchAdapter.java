@@ -15,11 +15,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     private ArrayList<SearchStock> searchStocks=new ArrayList<>();
 
     public SearchAdapter() {
-        searchStocks.add(new SearchStock("AAPL","Apple Inc","iphone ipad imac"));
+        searchStocks.add(new SearchStock("AAPL","Apple Inc","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
         searchStocks.add(new SearchStock("TSLA","Tesla Motors","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
         searchStocks.add(new SearchStock("AMZN","Amazon.com Inc","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
         searchStocks.add(new SearchStock("WMT","Walmart Inc","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
-
+        searchStocks.add(new SearchStock("WMT","Walmart Inc","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
+        searchStocks.add(new SearchStock("WMT","Walmart Inc","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

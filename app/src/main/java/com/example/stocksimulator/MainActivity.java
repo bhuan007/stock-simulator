@@ -51,6 +51,13 @@ public class MainActivity extends AppCompatActivity {
         rvHistory.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         rvHistory.setAdapter(new HistoryAdapter());
 
+        btnInvest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
