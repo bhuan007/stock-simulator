@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         rvHistory.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         rvHistory.setAdapter(new HistoryAdapter());
 
-
     }
 
     @Override
