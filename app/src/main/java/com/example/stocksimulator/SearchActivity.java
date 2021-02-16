@@ -58,7 +58,7 @@ public class SearchActivity extends AppCompatActivity {
                     .build();
         }
         StockApiService stockApiService = retrofit.create(StockApiService.class);
-        Call<SearchListResponse> call = stockApiService.getSearchStock("SYMBOL_SEARCH", "tesco", API_KEY);
+        Call<SearchListResponse> call = stockApiService.getSearchStock("SYMBOL_SEARCH", "tesla", API_KEY);
         call.enqueue(new Callback<SearchListResponse>() {
             @Override
             public void onResponse(Call<SearchListResponse> call, Response<SearchListResponse> response) {
