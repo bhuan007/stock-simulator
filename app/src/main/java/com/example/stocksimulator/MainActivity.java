@@ -21,6 +21,11 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
@@ -67,6 +72,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
+
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        String todaysdate = dateFormat.format(date);
+
+        txtDate.setText(todaysdate);
+
+
+        View headView=navigationView.getHeaderView(0);
+        TextView nav_date=(TextView)headView.findViewById(R.id.nav_date);
+        nav_date.setText(todaysdate);
+
+        TextView nav_username=(TextView)headView.findViewById(R.id.nav_username);
+        nav_username.setText(LoginActivity.get_userName());
+
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -82,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent);
                         break;
+
                     default:
                         break;
                 }
