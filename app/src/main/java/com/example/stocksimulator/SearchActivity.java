@@ -8,12 +8,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SearchActivity extends AppCompatActivity {
     RecyclerView rv_search;
@@ -24,6 +32,8 @@ public class SearchActivity extends AppCompatActivity {
 
     static final String BASE_URL = "https://www.alphavantage.co/";
     static final String API_KEY = "XYMPL5T1DU2XPZ8P";
+    static Retrofit retrofit = null;
+    private List<String[]> searchStockList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +46,39 @@ public class SearchActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         rv_search.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        rv_search.setAdapter(new SearchAdapter());
 
         if (searchStocks.size() != 0) emptySearchBlock.setVisibility(View.GONE);
+
+        searchStockList = new ArrayList<>();
+
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        StockApiService stockApiService = retrofit.create(StockApiService.class);
+        Call<SearchListResponse> call = stockApiService.getSearchStock("SYMBOL_SEARCH", "tesco", API_KEY);
+        call.enqueue(new Callback<SearchListResponse>() {
+            @Override
+            public void onResponse(Call<SearchListResponse> call, Response<SearchListResponse> response) {
+                for (int i = 0; i < 5; i ++) {
+                    String[] results = {
+                        response.body().getMatch(i).getSymbol(),
+                        response.body().getMatch(i).getName(),
+                        response.body().getMatch(i).getType(),
+                        response.body().getMatch(i).getRegion()
+                    };
+                    searchStockList.add(results);
+                }
+                rv_search.setAdapter(new SearchAdapter(searchStockList));
+            }
+            @Override
+            public void onFailure(Call<SearchListResponse> call, Throwable throwable) {
+                Log.e(SearchActivity.class.getSimpleName(), throwable.toString());
+            }
+        });
+
 
 
     }
