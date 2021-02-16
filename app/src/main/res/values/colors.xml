@@ -11,4 +11,7 @@
     <color name="offBlack">#333333</color>
     <color name="positiveGreen">#13B829</color>
     <color name="negativeRed">#C80F0F</color>
+    <color name="tomatoRed">#F4410B</color>
+    <color name="login_gradient_start">#686A7E</color>
+    <color name="login_gradient_end">#35333E</color>
 </resources>
