@@ -24,7 +24,8 @@
             android:textSize="24sp"
             android:hint="Email Address"
             android:layout_marginTop="40dp"
-            android:textColorHint="@color/offWhite"/>
+            android:textColorHint="@color/offWhite"
+            android:textColor="@color/white"/>
 
         <EditText
             android:id="@+id/editTextTextPassword"
@@ -34,7 +35,8 @@
             android:textSize="24sp"
             android:hint="Password"
             android:layout_marginTop="40dp"
-            android:textColorHint="@color/offWhite"/>
+            android:textColorHint="@color/offWhite"
+            android:textColor="@color/white"/>
 
         <Button
             android:id="@+id/loginButton"

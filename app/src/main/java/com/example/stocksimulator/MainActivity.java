@@ -72,7 +72,13 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()) {
                     case R.id.navSignOut:
-                        if (mAuth != null) mAuth.signOut();
+                        if (mAuth != null) {
+                            Toast.makeText(MainActivity.this, "About to sign out", Toast.LENGTH_SHORT).show();
+                            mAuth.getInstance().signOut();
+                        }
+                        else {
+                            Toast.makeText(MainActivity.this, "You are already signed out", Toast.LENGTH_SHORT).show();
+                        }
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent);
                         break;
@@ -104,7 +110,5 @@ public class MainActivity extends AppCompatActivity {
         rvHistory = findViewById(R.id.rvHistory);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigation);
-
-        mAuth.getInstance();
     }
 }
