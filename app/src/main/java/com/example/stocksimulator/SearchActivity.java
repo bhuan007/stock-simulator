@@ -10,14 +10,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
 public class SearchActivity extends AppCompatActivity {
     RecyclerView rv_search;
+    LinearLayout emptySearchBlock;
     Toolbar toolbar;
     SearchView search;
     ArrayList<SearchStock> searchStocks = new ArrayList<>();
+
+    static final String BASE_URL = "https://www.alphavantage.co/";
+    static final String API_KEY = "XYMPL5T1DU2XPZ8P";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +37,8 @@ public class SearchActivity extends AppCompatActivity {
 
         rv_search.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         rv_search.setAdapter(new SearchAdapter());
+
+        if (searchStocks.size() != 0) emptySearchBlock.setVisibility(View.GONE);
 
 
     }
@@ -61,5 +69,6 @@ public class SearchActivity extends AppCompatActivity {
     private void initViews() {
         rv_search = findViewById(R.id.rv_search);
         toolbar = findViewById(R.id.toolbar_search);
+        emptySearchBlock = findViewById(R.id.emptySearchBlock);
     }
 }

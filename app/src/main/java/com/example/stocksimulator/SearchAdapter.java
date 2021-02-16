@@ -15,12 +15,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     private ArrayList<SearchStock> searchStocks=new ArrayList<>();
 
     public SearchAdapter() {
-        searchStocks.add(new SearchStock("AAPL","Apple Inc","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
-        searchStocks.add(new SearchStock("TSLA","Tesla Motors","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
-        searchStocks.add(new SearchStock("AMZN","Amazon.com Inc","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
-        searchStocks.add(new SearchStock("WMT","Walmart Inc","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
-        searchStocks.add(new SearchStock("WMT","Walmart Inc","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
-        searchStocks.add(new SearchStock("WMT","Walmart Inc","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
+//        searchStocks.add(new SearchStock("AAPL","Apple Inc","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
+//        searchStocks.add(new SearchStock("TSLA","Tesla Motors","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
+//        searchStocks.add(new SearchStock("AMZN","Amazon.com Inc","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
+//        searchStocks.add(new SearchStock("WMT","Walmart Inc","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
+//        searchStocks.add(new SearchStock("WMT","Walmart Inc","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
+//        searchStocks.add(new SearchStock("WMT","Walmart Inc","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -46,13 +46,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String ticker = searchStocks.get(position).getStock_ticker();
-        String name = searchStocks.get(position).getStock_name();
-        String description = searchStocks.get(position).getStock_description();
-
-        holder.txt_stock_ticker.setText(ticker);
-        holder.txt_stock_name.setText(name);
-        holder.txt_stock_description.setText(description);
+//        String ticker = searchStocks.get(position).getStock_ticker();
+//        String name = searchStocks.get(position).getStock_name();
+//        String description = searchStocks.get(position).getStock_description();
+//
+//        holder.txt_stock_ticker.setText(ticker);
+//        holder.txt_stock_name.setText(name);
+//        holder.txt_stock_description.setText(description);
     }
 
     @Override
