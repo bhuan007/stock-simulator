@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     TextView txtBalance, txtDiff, txtDate;
     Button btnInvest;
     RecyclerView rvHistory;
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,13 +73,10 @@ public class MainActivity extends AppCompatActivity {
                 switch(item.getItemId()) {
                     case R.id.navSignOut:
                         if (mAuth != null) {
-                            Toast.makeText(MainActivity.this, "About to sign out", Toast.LENGTH_SHORT).show();
                             mAuth.getInstance().signOut();
                         }
-                        else {
-                            Toast.makeText(MainActivity.this, "You are already signed out", Toast.LENGTH_SHORT).show();
-                        }
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         break;
                     default:
