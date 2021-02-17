@@ -14,9 +14,9 @@ import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder>{
 
-    private List<String[]> searchStocks;
+    private ArrayList<SearchStock> searchStocks;
 
-    SearchAdapter(List<String[]> searchStocks) {
+    SearchAdapter(ArrayList<SearchStock> searchStocks) {
         this.searchStocks = searchStocks;
     }
 
@@ -27,7 +27,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             txt_stock_ticker=itemView.findViewById(R.id.txt_stock_ticker);
             txt_stock_name=itemView.findViewById(R.id.txt_stock_name);
             txt_stock_description=itemView.findViewById(R.id.txt_stock_description);
-
         }
 
     }
@@ -41,13 +40,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     }
 
-    @SuppressLint("SetTextI18n")
+//    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String[] stockInfo = searchStocks.get(position);
-        holder.txt_stock_ticker.setText(stockInfo[0]);
-        holder.txt_stock_name.setText(stockInfo[1]);
-        holder.txt_stock_description.setText(stockInfo[2] +"\n"+stockInfo[3]);
+        SearchStock stockInfo = searchStocks.get(position);
+        holder.txt_stock_ticker.setText(stockInfo.getSymbol());
+        holder.txt_stock_name.setText(stockInfo.getName());
+        holder.txt_stock_description.setText(stockInfo.getRegion());
     }
 
     @Override

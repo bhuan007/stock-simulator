@@ -72,9 +72,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Calendar cal = Calendar.getInstance();
         Date date = cal.getTime();
@@ -82,14 +79,16 @@ public class MainActivity extends AppCompatActivity {
 
         txtDate.setText(todaysdate);
 
-
         View headView=navigationView.getHeaderView(0);
         TextView nav_date=(TextView)headView.findViewById(R.id.nav_date);
         nav_date.setText(todaysdate);
 
         TextView nav_username=(TextView)headView.findViewById(R.id.nav_username);
-        nav_username.setText(LoginActivity.get_userName());
 
+        // Not sure what username is? Its returning a blank
+//        nav_username.setText(LoginActivity.get_userName());
+
+        nav_username.setText(mAuth.getCurrentUser().getEmail());
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -100,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
                             mAuth.getInstance().signOut();
                         }
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         break;
 

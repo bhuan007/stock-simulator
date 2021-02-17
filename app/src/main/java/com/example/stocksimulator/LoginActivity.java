@@ -76,37 +76,30 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        mSignUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signUp();
+            }
+        });
+
+        if (mAuth.getCurrentUser() != null) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
+
     }
 
 
-
-<<<<<<< HEAD
-            mSignUpButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    signUp();
-                }
-            });
-
-            if (mAuth.getCurrentUser() != null) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        }
-=======
->>>>>>> d98de5c9978dfd1c4724b6ded1792f1c1e26a0b9
 
     @Override
     public void onStart() {
         super.onStart();
 
-<<<<<<< HEAD
-=======
         // Check auth on Activity start
 //            if (mAuth.getCurrentUser() != null) {
 //                onLogInAuthSuccess(mAuth.getCurrentUser());
 //            }
->>>>>>> d98de5c9978dfd1c4724b6ded1792f1c1e26a0b9
     }
 
     private void signIn() {
@@ -226,6 +219,8 @@ public class LoginActivity extends AppCompatActivity {
 //            mDatabase.child("users").child(userId).setValue(user);
     }
     // [END basic_write]
+
+    // Do we need these methods? We can do FirebaseAuth.getInstance() from any activity
 
     public static String get_userName(){
         return userName;
