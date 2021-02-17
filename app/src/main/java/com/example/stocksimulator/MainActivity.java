@@ -1,8 +1,10 @@
 package com.example.stocksimulator;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,11 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     TextView txtBalance, txtDiff, txtDate;
     Button btnInvest;
     RecyclerView rvHistory;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+
+
         rvHistory.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         rvHistory.setAdapter(new HistoryAdapter());
 
@@ -56,6 +64,29 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()) {
+                    case R.id.navSignOut:
+                        if (mAuth != null) {
+                            Toast.makeText(MainActivity.this, "About to sign out", Toast.LENGTH_SHORT).show();
+                            mAuth.getInstance().signOut();
+                        }
+                        else {
+                            Toast.makeText(MainActivity.this, "You are already signed out", Toast.LENGTH_SHORT).show();
+                        }
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        break;
+                    default:
+                        break;
+                }
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
             }
         });
     }
@@ -67,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
+
+
 
     private void initViews() {
         toolbar = findViewById(R.id.toolbar);

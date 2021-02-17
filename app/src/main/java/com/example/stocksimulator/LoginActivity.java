@@ -22,7 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity {
 
         private static final String TAG = "SignInActivity";
 
@@ -43,34 +43,43 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             mDatabase = FirebaseDatabase.getInstance().getReference();
             mAuth = FirebaseAuth.getInstance();
 
+
             // Views
             mEmailField = findViewById(R.id.editTextTextEmailAddress);
             mEmailField.setHint("Email");
             mPasswordField = findViewById(R.id.editTextTextPassword);
             mSignInButton = findViewById(R.id.loginButton);
-            mSignInButton.setText("Sign In");
 
             mSignUpButton = findViewById(R.id.signupButton);
-            mSignUpButton.setText("Sign Up");
             // Click listeners
-            mSignInButton.setOnClickListener(this);
-            mSignUpButton.setOnClickListener(this);
+//            mSignInButton.setOnClickListener(this);
+//            mSignUpButton.setOnClickListener(this);
+
+            mSignInButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    signIn();
+                }
+            });
+
+            mSignUpButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    signUp();
+                }
+            });
         }
 
-
-
-
-        @Override
-        public void onStart() {
-            super.onStart();
-
-            // Check auth on Activity start
-            if (mAuth.getCurrentUser() != null) {
-                onAuthSuccess(mAuth.getCurrentUser());
-            }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mAuth.getCurrentUser() != null) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
         }
+    }
 
-        private void signIn() {
+    private void signIn() {
             Log.d(TAG, "signIn");
             if (!validateForm()) {
                 return;
@@ -91,7 +100,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 onAuthSuccess(task.getResult().getUser());
 
                             } else {
-                                Toast.makeText(LoginActivity.this, "Sign In Failed",
+                                Toast.makeText(LoginActivity.this, task.getException().getMessage(),
                                         Toast.LENGTH_LONG).show();
                             }
                         }
@@ -119,7 +128,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 onAuthSuccess(task.getResult().getUser());
 
                             } else {
-                                Toast.makeText(LoginActivity.this, "Sign Up Failed",
+                                Toast.makeText(LoginActivity.this,  task.getException().getMessage() ,
                                         Toast.LENGTH_LONG).show();
                             }
                         }
@@ -173,13 +182,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         // [END basic_write]
 
-        @Override
-        public void onClick(View v) {
-            int i = v.getId();
-            if (i == R.id.signupButton) {
-                signIn();
-            } else if (i == R.id.signupButton) {
-                signUp();
-            }
-        }
+
 }

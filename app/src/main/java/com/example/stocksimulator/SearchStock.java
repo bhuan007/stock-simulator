@@ -1,26 +1,38 @@
 package com.example.stocksimulator;
 
+import com.google.gson.annotations.SerializedName;
+
 public class SearchStock {
 
-    private String stock_ticker;
-    private String stock_name;
-    private String stock_description;
+    @SerializedName("1. symbol")
+    private String symbol;
+    @SerializedName("2. name")
+    private String name;
+    @SerializedName("3. type")
+    private String type;
+    @SerializedName("4. region")
+    private String region;
 
-    public SearchStock(String stock_ticker, String stock_name, String stock_description) {
-        this.stock_ticker = stock_ticker;
-        this.stock_name = stock_name;
-        this.stock_description = stock_description;
+    public SearchStock(String symbol, String name, String type, String region) {
+        this.symbol = symbol;
+        this.name = name;
+        this.type = type;
+        this.region = region;
     }
 
-    public String getStock_ticker() {
-        return stock_ticker;
+    public String getSymbol() {
+        return symbol;
     }
 
-    public String getStock_name() {
-        return stock_name;
+    public String getName() {
+        return name;
     }
 
-    public String getStock_description() {
-        return stock_description;
+    public String getType() {
+        return type;
+    }
+
+    public String getRegion() {
+        return region;
     }
 }
