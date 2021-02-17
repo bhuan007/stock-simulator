@@ -1,5 +1,6 @@
 package com.example.stocksimulator;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,18 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder>{
 
-    private ArrayList<SearchStock> searchStocks=new ArrayList<>();
+    private List<String[]> searchStocks;
 
-    public SearchAdapter() {
-//        searchStocks.add(new SearchStock("AAPL","Apple Inc","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
-//        searchStocks.add(new SearchStock("TSLA","Tesla Motors","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
-//        searchStocks.add(new SearchStock("AMZN","Amazon.com Inc","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
-//        searchStocks.add(new SearchStock("WMT","Walmart Inc","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
-//        searchStocks.add(new SearchStock("WMT","Walmart Inc","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
-//        searchStocks.add(new SearchStock("WMT","Walmart Inc","model s model x model model model xxxxxxxxxxxxxxxxxxxxxxxxx"));
+    SearchAdapter(List<String[]> searchStocks) {
+        this.searchStocks = searchStocks;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -44,15 +41,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-//        String ticker = searchStocks.get(position).getStock_ticker();
-//        String name = searchStocks.get(position).getStock_name();
-//        String description = searchStocks.get(position).getStock_description();
-//
-//        holder.txt_stock_ticker.setText(ticker);
-//        holder.txt_stock_name.setText(name);
-//        holder.txt_stock_description.setText(description);
+        String[] stockInfo = searchStocks.get(position);
+        holder.txt_stock_ticker.setText(stockInfo[0]);
+        holder.txt_stock_name.setText(stockInfo[1]);
+        holder.txt_stock_description.setText(stockInfo[2] +"\n"+stockInfo[3]);
     }
 
     @Override

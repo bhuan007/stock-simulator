@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.stocksimulator">
 
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
 
     <application
         android:allowBackup="true"
@@ -13,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StockSimulator">
         <activity
+
             android:name=".LoginActivity"
             android:label="@string/title_activity_login">
             <intent-filter>
@@ -22,10 +21,6 @@
             </intent-filter>
         </activity>
 
-
-        <activity android:name=".SearchActivity" />
-        <activity android:name=".MainActivity">
-        </activity>
     </application>
 
 </manifest>

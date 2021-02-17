@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String USERNAME = "username";
 
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
     //        private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
 
@@ -215,6 +215,10 @@ public class LoginActivity extends AppCompatActivity {
 
     public static String get_id(){
         return userId;
+    }
+
+    public static FirebaseFirestore get_db(){
+        return db;
     }
 
 }
