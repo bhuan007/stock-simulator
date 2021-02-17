@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StockSimulator">
         <activity
+<<<<<<< HEAD
             android:name=".LoginActivity"
             android:label="@string/title_activity_login">
             <intent-filter>
@@ -22,6 +23,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+=======
+            android:name=".WatchListActivity"
+            android:label="@string/title_activity_watch_list"></activity>
+>>>>>>> WatchList
 
         <uses-library
             android:name="com.google.android.wearable"
@@ -34,7 +39,10 @@
             android:name="com.google.android.wearable.standalone"
             android:value="true" />
 
+<<<<<<< HEAD
         <activity android:name=".SearchActivity" />
+=======
+>>>>>>> WatchList
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
