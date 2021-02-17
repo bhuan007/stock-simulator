@@ -6,7 +6,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <include
         layout="@layout/toolbar"
-        android:id="watch_list_toolbar"
+        android:id="@+id/watch_list_toolbar"
         android:titleTextColor="@color/white"
         app:titleTextColor="@android:color/white"
         />

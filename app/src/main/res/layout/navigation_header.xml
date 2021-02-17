@@ -8,30 +8,33 @@
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
         android:src="@drawable/stock_simulator"/>
+
     <LinearLayout
+        android:id="@+id/nav_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_gravity="top"
-        android:layout_margin="16dp">
+        android:layout_margin="16dp"
+        android:orientation="vertical">
 
         <TextView
+            android:id="@+id/nav_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome, Sam Malek!"
-            android:textColor="#ffffff"
             android:background="#000000"
             android:padding="4dp"
-            />
+            android:text="Welcome, Sam Malek!"
+            android:textColor="#ffffff" />
 
         <TextView
-            android:layout_marginTop="4dp"
+            android:id="@+id/nav_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="02/13/2021"
-            android:textColor="#ffffff"
+            android:layout_marginTop="4dp"
             android:background="#000000"
-            android:padding="4dp"/>
+            android:padding="4dp"
+            android:text="02/13/2021"
+            android:textColor="#ffffff" />
     </LinearLayout>
 
 </FrameLayout>
