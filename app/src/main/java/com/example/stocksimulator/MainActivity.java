@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     TextView txtBalance, txtDiff, txtDate;
     Button btnInvest;
     RecyclerView rvHistory;
+    Firebase firebase = new Firebase();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
@@ -55,10 +56,10 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        firebase = new Firebase();
 
 
         rvHistory.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -73,23 +74,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        Calendar cal = Calendar.getInstance();
-        Date date = cal.getTime();
-        String todaysdate = dateFormat.format(date);
 
-        txtDate.setText(todaysdate);
 
-        View headView=navigationView.getHeaderView(0);
-        TextView nav_date=(TextView)headView.findViewById(R.id.nav_date);
-        nav_date.setText(todaysdate);
-
-        TextView nav_username=(TextView)headView.findViewById(R.id.nav_username);
-
-        // Not sure what username is? Its returning a blank
-//        nav_username.setText(LoginActivity.get_userName());
-
-        nav_username.setText(mAuth.getCurrentUser().getEmail());
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -115,12 +101,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_toolbar, menu);
-
-
         return super.onCreateOptionsMenu(menu);
     }
-
-
 
     private void initViews() {
         toolbar = findViewById(R.id.toolbar);
@@ -131,5 +113,20 @@ public class MainActivity extends AppCompatActivity {
         rvHistory = findViewById(R.id.rvHistory);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigation);
+
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        String todaysdate = dateFormat.format(date);
+
+        txtDate.setText(todaysdate);
+
+        View headView=navigationView.getHeaderView(0);
+        TextView nav_date=(TextView)headView.findViewById(R.id.nav_date);
+        nav_date.setText(todaysdate);
+
+        TextView nav_username=(TextView)headView.findViewById(R.id.nav_username);
+
+        nav_username.setText(firebase.get_userName());
     }
 }
