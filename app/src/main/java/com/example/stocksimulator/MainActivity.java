@@ -34,8 +34,9 @@ public class MainActivity extends AppCompatActivity {
     TextView txtBalance, txtDiff, txtDate;
     Button btnInvest;
     RecyclerView rvHistory;
-    private FirebaseAuth mAuth= FirebaseAuth.getInstance();;
+
     private Firebase firebase;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,16 +75,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Calendar cal = Calendar.getInstance();
         Date date = cal.getTime();
         String todaysdate = dateFormat.format(date);
 
         txtDate.setText(todaysdate);
-
 
         View headView=navigationView.getHeaderView(0);
         TextView nav_date=(TextView)headView.findViewById(R.id.nav_date);
@@ -99,11 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 switch(item.getItemId()) {
                     case R.id.navSignOut:
                         if (mAuth != null) {
-                            Toast.makeText(MainActivity.this, "About to sign out", Toast.LENGTH_SHORT).show();
                             mAuth.getInstance().signOut();
-                        }
-                        else {
-                            Toast.makeText(MainActivity.this, "You are already signed out", Toast.LENGTH_SHORT).show();
                         }
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent);

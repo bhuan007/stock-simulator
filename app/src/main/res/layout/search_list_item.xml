@@ -1,50 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="140dp"
-    android:orientation="horizontal"
-    android:background="@drawable/summary_view">
+    android:layout_height="120dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="8dp"
+    android:background="@drawable/search_list_item_background">
 
     <TextView
+        android:id="@+id/txt_stock_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Tesla Inc."
+        android:textColor="@color/black" />
+
+    <TextView
+        android:background="@drawable/summary_view"
+        android:padding="4dp"
         android:id="@+id/txt_stock_ticker"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal"
         android:layout_height="wrap_content"
-        android:text="APPL"
-        android:textSize="30sp"
+        android:layout_gravity="center"
+        android:text="TSLA"
         android:textColor="@color/black"
-        android:layout_gravity="center"
-        android:padding="12dp"
-        android:layout_marginLeft="12dp"
-        />
+        android:textSize="28sp"
+        android:backgroundTint="@color/offWhite"
+        android:layout_margin="4dp"/>
 
-    <android.widget.LinearLayout
+
+    <TextView
+        android:id="@+id/txt_stock_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:padding="8dp"
-        >
-
-        <TextView
-            android:id="@+id/txt_stock_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Apple Inc."
-            android:textColor="@color/black"
-            android:layout_gravity="center"
-            android:layout_marginBottom="8dp"
-            />
-
-        <TextView
-            android:id="@+id/txt_stock_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="dedededededededeededededeededeedededededededededededede"
-            android:textColor="@color/black"
-            />
-
-    </android.widget.LinearLayout>
+        android:text="United States"
+        android:textColor="@color/black"
+        android:layout_gravity="center"/>
 
 
 </android.widget.LinearLayout>
