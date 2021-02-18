@@ -18,25 +18,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
 
 
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "SignInActivity";
 
-    private static String userId = null;
-    private static String userName = null;
-    private static final String EMAIL = "email";
-    private static final String USERNAME = "username";
 
-
-    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
-    //        private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
 
     private EditText mEmailField;
@@ -49,8 +37,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-//            mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
 
@@ -86,9 +72,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
 
         // Check auth on Activity start
-//            if (mAuth.getCurrentUser() != null) {
-//                onLogInAuthSuccess(mAuth.getCurrentUser());
-//            }
+            if (mAuth.getCurrentUser() != null) {
+                Log.d(TAG,mAuth.getCurrentUser().getEmail());
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            }
     }
 
     private void signIn() {
@@ -109,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Sign In Successfully",
                                     Toast.LENGTH_LONG).show();
-                            onLogInAuthSuccess(task.getResult().getUser());
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
                         } else {
                             Toast.makeText(LoginActivity.this, task.getException().getMessage(),
@@ -148,35 +135,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void onLogInAuthSuccess(FirebaseUser user) {
-        String username = usernameFromEmail(user.getEmail());
-        this.userId=user.getUid();
-        this.userName=username;
-
-        // Go to MainActivity
-        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-
-    }
-
-
     private void onSignUpAuthSuccess(FirebaseUser user) {
-        String username = usernameFromEmail(user.getEmail());
 
-//            // Write new user
-        this.userId=user.getUid();
-        this.userName=username;
-
-        writeNewUser(user.getEmail());
-
+        Firebase firebase = new Firebase();
+        firebase.writeNewUser();
     }
 
-    private String usernameFromEmail(String email) {
-        if (email.contains("@")) {
-            return email.split("@")[0];
-        } else {
-            return email;
-        }
-    }
+
 
     private boolean validateForm() {
         boolean result = true;
@@ -197,28 +162,6 @@ public class LoginActivity extends AppCompatActivity {
         return result;
     }
 
-    // [START basic_write]
-    private void writeNewUser(String email) {
 
-        HashMap<String, Object> user = new HashMap<>();
-        user.put(EMAIL, email);
-        user.put(USERNAME, this.userName);
-
-        db.collection("users").document(this.userId).set(user);
-//            mDatabase.child("users").child(userId).setValue(user);
-    }
-    // [END basic_write]
-
-    public static String get_userName(){
-        return userName;
-    }
-
-    public static String get_id(){
-        return userId;
-    }
-
-    public static FirebaseFirestore get_db(){
-        return db;
-    }
 
 }
