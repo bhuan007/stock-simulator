@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WatchListActivity extends AppCompatActivity {
+public class StockListActivity extends AppCompatActivity {
 
     RecyclerView rv_watchList;
     static HorizontalScrollView headerScroll;
@@ -29,13 +29,14 @@ public class WatchListActivity extends AppCompatActivity {
 
     }
 
+
     private void initView(){
-        setContentView(R.layout.activity_watch_list);
-        ((TextView)findViewById(R.id.toolbar_title)).setText("Watch List");
-        headerScroll = findViewById(R.id.Header_W_Scroller);
-        rv_watchList = findViewById(R.id.rv_watchList);
+        setContentView(R.layout.activity_stock_list);
+        ((TextView)findViewById(R.id.toolbar_title)).setText("Stock List");
+        headerScroll = findViewById(R.id.Header_S_Scroller);
+        rv_watchList = findViewById(R.id.rv_stockList);
         rv_watchList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        rv_watchList.setAdapter(new WatchListAdapter());
+        rv_watchList.setAdapter(new StockListAdapter());
 
 
     }

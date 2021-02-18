@@ -53,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
 //            mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
-
         // Views
         mEmailField = findViewById(R.id.editTextTextEmailAddress);
         mEmailField.setHint("Email");
