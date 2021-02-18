@@ -96,10 +96,10 @@ public class LoginActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
-        // Check auth on Activity start
-//            if (mAuth.getCurrentUser() != null) {
-//                onLogInAuthSuccess(mAuth.getCurrentUser());
-//            }
+//         Check auth on Activity start
+        if (mAuth.getCurrentUser() != null) {
+            onLogInAuthSuccess(mAuth.getCurrentUser());
+        }
     }
 
     private void signIn() {

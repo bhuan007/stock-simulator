@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 
+import com.airbnb.lottie.LottieAnimationView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class SearchActivity extends AppCompatActivity {
     Toolbar toolbar;
     SearchView search;
     ArrayList<SearchStock> searchStocks = new ArrayList<>();
+    LottieAnimationView searchAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 emptySearchBlock.setVisibility(View.GONE);
+                searchAnimation.cancelAnimation();
                 search.clearFocus();
                 WebAPI.symbolSearch(query, rv_search, getApplicationContext());
                 return true;
@@ -86,5 +90,6 @@ public class SearchActivity extends AppCompatActivity {
         rv_search = findViewById(R.id.rv_search);
         toolbar = findViewById(R.id.toolbar_search);
         emptySearchBlock = findViewById(R.id.emptySearchBlock);
+        searchAnimation = findViewById(R.id.searchAnimation);
     }
 }
