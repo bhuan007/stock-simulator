@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     TextView txtBalance, txtDiff, txtDate;
     Button btnInvest;
     RecyclerView rvHistory;
+    Firebase firebase = new Firebase();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
@@ -57,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        firebase = new Firebase();
+
 
         rvHistory.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         rvHistory.setAdapter(new HistoryAdapter());
@@ -122,6 +126,6 @@ public class MainActivity extends AppCompatActivity {
 
         TextView nav_username=(TextView)headView.findViewById(R.id.nav_username);
 
-        nav_username.setText(LoginActivity.get_userName());
+        nav_username.setText(firebase.get_userName());
     }
 }

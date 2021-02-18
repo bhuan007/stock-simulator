@@ -48,6 +48,7 @@ public class StockDetailActivity extends AppCompatActivity {
     private LinearLayout parentContainer;
     private Toolbar toolbar;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private Firebase firebase = new Firebase();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,7 +171,7 @@ public class StockDetailActivity extends AppCompatActivity {
 
         TextView nav_username=(TextView)headView.findViewById(R.id.nav_username);
 
-        nav_username.setText(LoginActivity.get_userName());
+        nav_username.setText(firebase.get_userName());
     }
 
 }
