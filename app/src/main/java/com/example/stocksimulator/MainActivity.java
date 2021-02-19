@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.icu.text.CaseMap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -82,6 +84,19 @@ public class MainActivity extends AppCompatActivity {
 
         txtDate.setText(todaysdate);
 
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        TextView title = (TextView)toolbar.findViewById(R.id.cashBalance);
+        Log.d("Main", "onCreate: "+firebase.get_wallet());
+//        String text="$"+ firebase.get_wallet();
+//        title.setText(text);
+
+
+
+
         View headView=navigationView.getHeaderView(0);
         TextView nav_date=(TextView)headView.findViewById(R.id.nav_date);
         nav_date.setText(todaysdate);
@@ -114,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_toolbar, menu);
-
 
         return super.onCreateOptionsMenu(menu);
     }
