@@ -5,14 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    tools:context=".WatchListActivity">
+    tools:context=".StockListActivity">
 
     <include
-        layout="@layout/toolbar"
-        android:id="@+id/watch_list_toolbar"
-        android:titleTextColor="@color/white"
-        app:titleTextColor="@android:color/white"
-        />
+    layout="@layout/toolbar"
+    android:id="@+id/stock_list_toolbar"
+    android:titleTextColor="@color/white"
+    app:titleTextColor="@android:color/white"
+    />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/Header_W_Symbol"
+            android:id="@+id/Header_S_Symbol"
             android:layout_width="98dp"
             android:layout_height="wrap_content"
             android:paddingLeft="23dp"
@@ -31,18 +31,18 @@
             android:textAlignment="center"/>
 
         <HorizontalScrollView
-            android:id="@+id/Header_W_Scroller"
+            android:id="@+id/Header_S_Scroller"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none">
 
             <LinearLayout
-                android:id="@+id/Header_W_ListDetails"
+                android:id="@+id/Header_S_ListDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" >
 
                 <TextView
-                    android:id="@+id/Header_W_Open"
+                    android:id="@+id/Header_S_Open"
                     android:layout_width="90dp"
                     android:layout_height="match_parent"
                     android:padding="15dp"
@@ -50,7 +50,7 @@
                     android:textAlignment="center"/>
 
                 <TextView
-                    android:id="@+id/Header_W_High"
+                    android:id="@+id/Header_S_High"
                     android:layout_width="90dp"
                     android:layout_height="match_parent"
                     android:padding="15dp"
@@ -58,7 +58,7 @@
                     android:textAlignment="center"/>
 
                 <TextView
-                    android:id="@+id/Header_W_Low"
+                    android:id="@+id/Header_S_Low"
                     android:layout_width="90dp"
                     android:layout_height="match_parent"
                     android:padding="15dp"
@@ -66,7 +66,7 @@
                     android:textAlignment="center"/>
 
                 <TextView
-                    android:id="@+id/Header_W_Price"
+                    android:id="@+id/Header_S_Price"
                     android:layout_width="90dp"
                     android:layout_height="match_parent"
                     android:padding="15dp"
@@ -82,7 +82,7 @@
                     android:textAlignment="center"/>
 
                 <TextView
-                    android:id="@+id/Header_W_PreviousClose"
+                    android:id="@+id/Header_S_PreviousClose"
                     android:layout_width="90dp"
                     android:layout_height="match_parent"
                     android:padding="15dp"
@@ -90,7 +90,7 @@
                     android:textAlignment="center"/>
 
                 <TextView
-                    android:id="@+id/Header_W_Change"
+                    android:id="@+id/Header_S_Change"
                     android:layout_width="90dp"
                     android:layout_height="match_parent"
                     android:padding="15dp"
@@ -98,7 +98,7 @@
                     android:textAlignment="center"/>
 
                 <TextView
-                    android:id="@+id/Header_W_ChangePercent"
+                    android:id="@+id/Header_S_ChangePercent"
                     android:layout_width="90dp"
                     android:layout_height="match_parent"
                     android:padding="15dp"
@@ -113,10 +113,11 @@
 
     </LinearLayout>
 
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_watchList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    android:id="@+id/rv_stockList"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
 
 
 
