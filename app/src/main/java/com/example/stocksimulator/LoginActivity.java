@@ -23,22 +23,17 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "SignInActivity";
-
-
     private FirebaseAuth mAuth;
-
     private EditText mEmailField;
     private EditText mPasswordField;
     private Button mSignInButton;
     private Button mSignUpButton;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
-
 
         // Views
         mEmailField = findViewById(R.id.editTextTextEmailAddress);
@@ -81,7 +76,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-
         // Check auth on Activity start
             if (mAuth.getCurrentUser() != null) {
                 Log.d(TAG,mAuth.getCurrentUser().getEmail());
