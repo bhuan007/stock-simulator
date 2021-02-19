@@ -81,6 +81,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()) {
+                    case R.id.navStockList:
+                        Intent stockListIntent = new Intent(MainActivity.this, StockListActivity.class);
+                        startActivity(stockListIntent);
+                        break;
+                    case R.id.navWatchList:
+                        Intent watchListIntent = new Intent(MainActivity.this, WatchListActivity.class);
+                        startActivity(watchListIntent);
+                        break;
                     case R.id.navSignOut:
                         if (mAuth != null) {
                             mAuth.getInstance().signOut();
