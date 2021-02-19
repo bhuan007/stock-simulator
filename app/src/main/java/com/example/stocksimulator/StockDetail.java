@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class StockDetail {
 
+
     @SerializedName("01. symbol")
     private String symbol;
     @SerializedName("02. open")
@@ -16,6 +17,8 @@ public class StockDetail {
     private Double price;
     @SerializedName("06. volume")
     private Double volume;
+    @SerializedName("07. latest trading day")
+    private String date;
     @SerializedName("08. previous close")
     private Double previousClose;
     @SerializedName("09. change")
@@ -69,5 +72,9 @@ public class StockDetail {
 
     public String getChangePercent() {
         return changePercent;
+    }
+
+    public String getDate() {
+        return date;
     }
 }

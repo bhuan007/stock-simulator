@@ -36,8 +36,7 @@ public class MainActivity extends AppCompatActivity {
     TextView txtBalance, txtDiff, txtDate;
     Button btnInvest;
     RecyclerView rvHistory;
-
-    private Firebase firebase;
+    Firebase firebase = new Firebase();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
@@ -59,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -72,17 +70,11 @@ public class MainActivity extends AppCompatActivity {
         btnInvest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
             }
         });
-
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        Calendar cal = Calendar.getInstance();
-        Date date = cal.getTime();
-        String todaysdate = dateFormat.format(date);
-
-        txtDate.setText(todaysdate);
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -94,15 +86,6 @@ public class MainActivity extends AppCompatActivity {
 //        String text="$"+ firebase.get_wallet();
 //        title.setText(text);
 
-
-
-
-        View headView=navigationView.getHeaderView(0);
-        TextView nav_date=(TextView)headView.findViewById(R.id.nav_date);
-        nav_date.setText(todaysdate);
-
-        TextView nav_username=(TextView)headView.findViewById(R.id.nav_username);
-        nav_username.setText(firebase.get_userName());
 
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -133,8 +116,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-
-
     private void initViews() {
         toolbar = findViewById(R.id.toolbar);
         txtBalance = findViewById(R.id.txtBalance);
@@ -144,5 +125,20 @@ public class MainActivity extends AppCompatActivity {
         rvHistory = findViewById(R.id.rvHistory);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigation);
+
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        String todaysdate = dateFormat.format(date);
+
+        txtDate.setText(todaysdate);
+
+        View headView=navigationView.getHeaderView(0);
+        TextView nav_date=(TextView)headView.findViewById(R.id.nav_date);
+        nav_date.setText(todaysdate);
+
+        TextView nav_username=(TextView)headView.findViewById(R.id.nav_username);
+
+        nav_username.setText(firebase.get_userName());
     }
 }

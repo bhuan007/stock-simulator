@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    android:id="@+id/stockDetailDrawerLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/stockDetailToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:menu="@menu/main_toolbar"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loadingAnimation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="80dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading_anim"
+            android:visibility="visible"/>
+
+        <LinearLayout
+            android:id="@+id/parentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/stockInfoContainer"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/summary_view"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/stockSymbol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MSFT"
+                    android:textColor="@color/black"
+                    android:textSize="40sp" />
+
+                <TextView
+                    android:id="@+id/stockName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Microsoft Corporation" />
+
+                <TextView
+                    android:id="@+id/stockPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$236.05"
+                    android:textColor="@color/black"
+                    android:textSize="40sp" />
+
+                <TextView
+                    android:id="@+id/stockDifference"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+8.04 (3.47%)"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/txtDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="02/01/2021"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtDoNotOwn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:padding="8dp"
+                android:text="You currently do not own this stock"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:visibility="visible" />
+
+            <RelativeLayout
+                android:id="@+id/userStockInfoContainer"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:padding="8dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/txtNetChange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:text="Net Change"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/stockNetChange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginLeft="-3dp"
+                    android:layout_marginEnd="2dp"
+                    android:layout_toRightOf="@+id/txtNetChange"
+                    android:gravity="end"
+                    android:padding="4dp"
+                    android:text="+204.13 (16.35%)"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/txtCurrentValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtNetChange"
+                    android:padding="4dp"
+                    android:text="Current Value"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/stockCurrentValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/stockNetChange"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="2dp"
+                    android:layout_toRightOf="@+id/txtCurrentValue"
+                    android:gravity="end"
+                    android:padding="4dp"
+                    android:text="$1,452.65"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/txtInvested"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtCurrentValue"
+                    android:padding="4dp"
+                    android:text="You Invested"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/stockInvested"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/stockCurrentValue"
+                    android:layout_alignParentEnd="true"
+                    android:layout_toRightOf="@+id/txtInvested"
+                    android:gravity="end"
+                    android:padding="4dp"
+                    android:text="$0"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/txtSharesOwned"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtInvested"
+                    android:padding="4dp"
+                    android:text="Shares Owned"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/stockShares"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/stockInvested"
+                    android:layout_alignParentEnd="true"
+                    android:layout_toRightOf="@+id/txtSharesOwned"
+                    android:gravity="end"
+                    android:padding="4dp"
+                    android:text="0"
+                    android:textColor="@color/black" />
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/stockMetaInfoContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@color/offWhite"
+                android:gravity="center">
+
+                <RelativeLayout
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/txtOpen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="4dp"
+                        android:text="Today's Open"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/stockOpen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_toRightOf="@+id/txtOpen"
+                        android:gravity="end"
+                        android:padding="4dp"
+                        android:text="235.06"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/txtClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/txtOpen"
+                        android:padding="4dp"
+                        android:text="Previous Close"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/stockClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/stockOpen"
+                        android:layout_alignParentEnd="true"
+                        android:layout_toRightOf="@+id/txtClose"
+                        android:gravity="end"
+                        android:padding="4dp"
+                        android:text="231.96"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/txtRange"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/txtClose"
+                        android:padding="4dp"
+                        android:text="Day Range"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/stockRange"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/stockClose"
+                        android:layout_alignParentEnd="true"
+                        android:layout_toRightOf="@+id/txtRange"
+                        android:gravity="end"
+                        android:padding="4dp"
+                        android:text="232.43 - 242.50"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/txtVolume"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/txtRange"
+                        android:padding="4dp"
+                        android:text="Volume"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/stockVolume"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/stockRange"
+                        android:layout_alignParentEnd="true"
+                        android:layout_toRightOf="@+id/txtVolume"
+                        android:gravity="end"
+                        android:padding="4dp"
+                        android:text="33,314,193"
+                        android:textColor="@color/black" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/company_profile"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/button_login"
+                    android:text="TRADE"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/stockDetailNavigationView"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:menu="@menu/nav_menu"
+        app:headerLayout="@layout/navigation_header"
+        />
+
+
+</androidx.drawerlayout.widget.DrawerLayout>
