@@ -1,6 +1,8 @@
 package com.example.stocksimulator;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -21,6 +23,8 @@ import java.util.Map;
 import java.util.Objects;
 
 public class Firebase {
+
+    private static final String TAG = "Firebase";
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -66,7 +70,11 @@ public class Firebase {
         return this.userName;
     }
 
-    public void set_wallet(){
+    public interface OnSetWallet {
+        void onSetWallet();
+    }
+
+    public void set_wallet(Context context, OnSetWallet onSetWallet){
         DocumentReference reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
 
         reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -89,20 +97,44 @@ public class Firebase {
                         calendar2.setTime(new Date());
                         if(calendar2.after(calendar1)){
                             wallet=wallet+5000;
+                            Toast.makeText(context, "Added 5k to your wallet", Toast.LENGTH_SHORT).show();
                         }
                     }
                     HashMap<String, Object> userDoc = new HashMap<>();
                     userDoc.put("last_sign_in",Timestamp.now());
                     userDoc.put("wallet",wallet);
                     FirebaseFirestore.getInstance().collection("users"). document(uid).update(userDoc);
+
+                    onSetWallet.onSetWallet();
                 }
             }
         });
 
     }
 
-    public double get_wallet(){
-        return FirebaseFirestore.getInstance().collection("users"). document(uid).get().getResult().getDouble("wallet");
+    public interface OnGetWallet {
+        void onGetWallet(Double resultWallet);
+    }
+
+    public void get_wallet(OnGetWallet onGetWallet){
+        DocumentReference docRef = db.collection("users").document(uid);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        Double wallet = document.getDouble("wallet");
+                        onGetWallet.onGetWallet(wallet);
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
 

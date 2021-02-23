@@ -63,18 +63,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check auth on Activity start
-            if (mAuth.getCurrentUser() != null) {
-                Log.d(TAG,mAuth.getCurrentUser().getEmail());
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            }
-    }
-
     private void signIn() {
         Log.d(TAG, "signIn");
         if (!validateForm()) {
@@ -123,7 +111,6 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Sign Up Successfully",
                                     Toast.LENGTH_LONG).show();
 
-
                         } else {
                             Toast.makeText(LoginActivity.this, task.getException().getMessage(),
                                     Toast.LENGTH_LONG).show();
@@ -136,9 +123,14 @@ public class LoginActivity extends AppCompatActivity {
     private void onSignInAuthSuccess() {
 
         Firebase firebase = new Firebase();
-        firebase.set_wallet();
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
+        firebase.set_wallet(getApplicationContext(), new Firebase.OnSetWallet() {
+            @Override
+            public void onSetWallet() {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void onSignUpAuthSuccess() {
