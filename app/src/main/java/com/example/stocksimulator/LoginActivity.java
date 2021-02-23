@@ -23,15 +23,11 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "SignInActivity";
-
-
     private FirebaseAuth mAuth;
-
     private EditText mEmailField;
     private EditText mPasswordField;
     private Button mSignInButton;
     private Button mSignUpButton;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,31 +57,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        mSignUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signUp();
-            }
-        });
-
         if (mAuth.getCurrentUser() != null) {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
+            onSignInAuthSuccess();
         }
 
-    }
-
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // Check auth on Activity start
-            if (mAuth.getCurrentUser() != null) {
-                Log.d(TAG,mAuth.getCurrentUser().getEmail());
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            }
     }
 
     private void signIn() {
@@ -104,9 +79,9 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d(TAG, "signIn:onComplete:" + task.isSuccessful());
 
                         if (task.isSuccessful()) {
+                            onSignInAuthSuccess();
                             Toast.makeText(LoginActivity.this, "Sign In Successfully",
                                     Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
                         } else {
                             Toast.makeText(LoginActivity.this, task.getException().getMessage(),
@@ -132,9 +107,9 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d(TAG, "createUser:onComplete:" + task.isSuccessful());
 
                         if (task.isSuccessful()) {
+                            onSignUpAuthSuccess();
                             Toast.makeText(LoginActivity.this, "Sign Up Successfully",
                                     Toast.LENGTH_LONG).show();
-                            onSignUpAuthSuccess(task.getResult().getUser());
 
                         } else {
                             Toast.makeText(LoginActivity.this, task.getException().getMessage(),
@@ -145,7 +120,20 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void onSignUpAuthSuccess(FirebaseUser user) {
+    private void onSignInAuthSuccess() {
+
+        Firebase firebase = new Firebase();
+        firebase.set_wallet(getApplicationContext(), new Firebase.OnSetWallet() {
+            @Override
+            public void onSetWallet() {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    private void onSignUpAuthSuccess() {
 
         Firebase firebase = new Firebase();
         firebase.writeNewUser();

@@ -1,124 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
+<androidx.drawerlayout.widget.DrawerLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     tools:context=".StockListActivity">
-
-    <include
-    layout="@layout/toolbar"
-    android:id="@+id/stock_list_toolbar"
-    android:titleTextColor="@color/white"
-    app:titleTextColor="@android:color/white"
-    />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/Header_S_Symbol"
-            android:layout_width="98dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="23dp"
-            android:paddingTop="15dp"
-            android:paddingRight="15dp"
-            android:paddingBottom="15dp"
-            android:text="Symbol"
-            android:textAlignment="center"/>
-
-        <HorizontalScrollView
-            android:id="@+id/Header_S_Scroller"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/stockListToolBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="none">
+            android:layout_height="?attr/actionBarSize"
+            app:menu="@menu/main_toolbar"/>
 
-            <LinearLayout
-                android:id="@+id/Header_S_ListDetails"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/Header_S_Open"
-                    android:layout_width="90dp"
-                    android:layout_height="match_parent"
-                    android:padding="15dp"
-                    android:text="Open"
-                    android:textAlignment="center"/>
+            <TextView
+                android:id="@+id/Header_S_Symbol"
+                android:layout_width="98dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="23dp"
+                android:paddingTop="15dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="15dp"
+                android:text="Symbol"
+                android:textAlignment="center"/>
 
-                <TextView
-                    android:id="@+id/Header_S_High"
-                    android:layout_width="90dp"
-                    android:layout_height="match_parent"
-                    android:padding="15dp"
-                    android:text="High"
-                    android:textAlignment="center"/>
+            <HorizontalScrollView
+                android:id="@+id/Header_S_Scroller"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none">
 
-                <TextView
-                    android:id="@+id/Header_S_Low"
-                    android:layout_width="90dp"
-                    android:layout_height="match_parent"
-                    android:padding="15dp"
-                    android:text="Low"
-                    android:textAlignment="center"/>
+                <LinearLayout
+                    android:id="@+id/Header_S_ListDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" >
 
-                <TextView
-                    android:id="@+id/Header_S_Price"
-                    android:layout_width="90dp"
-                    android:layout_height="match_parent"
-                    android:padding="15dp"
-                    android:text="Price"
-                    android:textAlignment="center"/>
+                    <TextView
+                        android:id="@+id/Header_S_Open"
+                        android:layout_width="90dp"
+                        android:layout_height="match_parent"
+                        android:padding="15dp"
+                        android:text="Open"
+                        android:textAlignment="center"/>
 
-                <TextView
-                    android:id="@+id/Volume"
-                    android:layout_width="90dp"
-                    android:layout_height="match_parent"
-                    android:padding="15dp"
-                    android:text="Volume"
-                    android:textAlignment="center"/>
+                    <TextView
+                        android:id="@+id/Header_S_High"
+                        android:layout_width="90dp"
+                        android:layout_height="match_parent"
+                        android:padding="15dp"
+                        android:text="High"
+                        android:textAlignment="center"/>
 
-                <TextView
-                    android:id="@+id/Header_S_PreviousClose"
-                    android:layout_width="90dp"
-                    android:layout_height="match_parent"
-                    android:padding="15dp"
-                    android:text="Previous Close"
-                    android:textAlignment="center"/>
+                    <TextView
+                        android:id="@+id/Header_S_Low"
+                        android:layout_width="90dp"
+                        android:layout_height="match_parent"
+                        android:padding="15dp"
+                        android:text="Low"
+                        android:textAlignment="center"/>
 
-                <TextView
-                    android:id="@+id/Header_S_Change"
-                    android:layout_width="90dp"
-                    android:layout_height="match_parent"
-                    android:padding="15dp"
-                    android:text="Change$"
-                    android:textAlignment="center"/>
+                    <TextView
+                        android:id="@+id/Header_S_Price"
+                        android:layout_width="90dp"
+                        android:layout_height="match_parent"
+                        android:padding="15dp"
+                        android:text="Price"
+                        android:textAlignment="center"/>
 
-                <TextView
-                    android:id="@+id/Header_S_ChangePercent"
-                    android:layout_width="90dp"
-                    android:layout_height="match_parent"
-                    android:padding="15dp"
-                    android:text="Change%"
-                    android:textAlignment="center"/>
+                    <TextView
+                        android:id="@+id/Volume"
+                        android:layout_width="90dp"
+                        android:layout_height="match_parent"
+                        android:padding="15dp"
+                        android:text="Volume"
+                        android:textAlignment="center"/>
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/Header_S_PreviousClose"
+                        android:layout_width="90dp"
+                        android:layout_height="match_parent"
+                        android:padding="15dp"
+                        android:text="Previous Close"
+                        android:textAlignment="center"/>
 
-        </HorizontalScrollView>
+                    <TextView
+                        android:id="@+id/Header_S_Change"
+                        android:layout_width="90dp"
+                        android:layout_height="match_parent"
+                        android:padding="15dp"
+                        android:text="Change$"
+                        android:textAlignment="center"/>
 
+                    <TextView
+                        android:id="@+id/Header_S_ChangePercent"
+                        android:layout_width="90dp"
+                        android:layout_height="match_parent"
+                        android:padding="15dp"
+                        android:text="Change%"
+                        android:textAlignment="center"/>
 
+                </LinearLayout>
 
+            </HorizontalScrollView>
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_stockList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/stockListNavigation"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:menu="@menu/nav_menu"
+        app:headerLayout="@layout/navigation_header"
+        />
 
-    <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/rv_stockList"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
 
 
-
-</LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.icu.text.CaseMap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +30,7 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
@@ -43,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initViews();
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.nav_open_drawer, R.string.nav_close_drawer) {
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -76,10 +79,27 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        TextView title = (TextView)toolbar.findViewById(R.id.cashBalance);
+        firebase.get_wallet(new Firebase.OnGetWallet() {
+            @Override
+            public void onGetWallet(Double resultWallet) {
+                String text = "$" + resultWallet;
+                title.setText(text);
+            }
+        });
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()) {
+                    case R.id.navStockList:
+                        Intent stockListIntent = new Intent(MainActivity.this, StockListActivity.class);
+                        startActivity(stockListIntent);
+                        break;
+                    case R.id.navWatchList:
+                        Intent watchListIntent = new Intent(MainActivity.this, WatchListActivity.class);
+                        startActivity(watchListIntent);
+                        break;
                     case R.id.navSignOut:
                         if (mAuth != null) {
                             mAuth.getInstance().signOut();
