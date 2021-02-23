@@ -1,6 +1,7 @@
 package com.example.stocksimulator;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +49,7 @@ public class StockListAdapter extends RecyclerView.Adapter<StockListAdapter.View
         TextView txt_stock_priceIndicator,txt_stock_symbol,txt_stock_open,txt_stock_high,txt_stock_low,txt_stock_price,
                 txt_stock_volume,txt_stock_previousClose,txt_stock_change,txt_stock_changePercent;
         HorizontalScrollView stockListScrollView;
-        LinearLayout stockListDetails;
+        LinearLayout stockListDetails,stockView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -65,6 +66,7 @@ public class StockListAdapter extends RecyclerView.Adapter<StockListAdapter.View
 
             stockListScrollView = itemView.findViewById(R.id.ListScroller);
             stockListDetails = itemView.findViewById(R.id.ListDetails);
+            stockView = itemView.findViewById((R.id.stockView));
         }
     }
 
@@ -108,6 +110,15 @@ public class StockListAdapter extends RecyclerView.Adapter<StockListAdapter.View
 
             }
 
+        });
+
+        holder.stockView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(holder.stockView.getContext(), StockDetailActivity.class);
+                intent.putExtra("stockTicker",stockDetail.getSymbol());
+                holder.stockView.getContext().startActivity(intent);
+            }
         });
     }
 
