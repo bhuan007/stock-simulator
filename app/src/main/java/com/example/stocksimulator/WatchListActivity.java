@@ -57,7 +57,7 @@ public class WatchListActivity extends AppCompatActivity {
         watchListDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        TextView title = (TextView)toolbar.findViewById(R.id.cashBalance);
+        TextView title = (TextView) toolbar.findViewById(R.id.cashBalance);
         firebase.get_wallet(new Firebase.OnGetWallet() {
             @Override
             public void onGetWallet(Double resultWallet) {
@@ -69,7 +69,7 @@ public class WatchListActivity extends AppCompatActivity {
         watchListNavigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch(item.getItemId()) {
+                switch (item.getItemId()) {
                     case R.id.navHome:
                         Intent homeIntent = new Intent(WatchListActivity.this, MainActivity.class);
                         startActivity(homeIntent);
@@ -103,7 +103,7 @@ public class WatchListActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void initView(){
+    private void initView() {
         setContentView(R.layout.activity_watch_list);
         headerScroll = findViewById(R.id.Header_W_Scroller);
         rv_watchList = findViewById(R.id.rv_watchList);
@@ -112,7 +112,5 @@ public class WatchListActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.watchListToolbar);
         watchListNavigation = findViewById(R.id.watchListNavigation);
         watchListDrawerLayout = findViewById(R.id.watchListDrawerLayout);
-
-
     }
 }

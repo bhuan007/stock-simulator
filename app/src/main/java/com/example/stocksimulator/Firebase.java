@@ -14,6 +14,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -218,6 +219,47 @@ public class Firebase {
             }
         });
     }
+
+
+
+    public interface OnGetStockList {
+        ArrayList<String> onGetStockList(ArrayList<String> tickers);
+    }
+
+    public void get_stocklist(OnGetStockList onGetStockList){
+        DocumentReference reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if (task.isSuccessful()) {
+                    HashMap stock_map = (HashMap)(task.getResult().get("stock_list"));
+                    onGetStockList.onGetStockList(new ArrayList<>(stock_map.keySet()));
+                }
+            }
+        });}
+
+
+
+
+    public interface OnGetWatchList {
+        ArrayList<String> onGetWatchList(ArrayList<String> tickers);
+    }
+
+    public void get_watchlist(OnGetWatchList onGetWatchList){
+        DocumentReference reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if (task.isSuccessful()) {
+                    HashMap stock_map = (HashMap)(task.getResult().get("stock_list"));
+                    onGetWatchList.onGetWatchList(new ArrayList<>(stock_map.keySet()));
+                }
+            }
+        });}
 
 
 
