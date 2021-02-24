@@ -10,12 +10,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -55,7 +53,13 @@ public class Firebase {
         HashMap<String, Object> userDoc = new HashMap<>();
         Timestamp lastSignIn=null;
         userDoc.put("last_sign_in",lastSignIn);
-        Map<String, Map<String,Integer>> stockList=null;
+        Map<String, Map<String,Object>> stockList=null;
+
+//        Map<String,Object> inner_stock = new HashMap<>();
+//        inner_stock.put("invested", 0);
+//        inner_stock.put("shares", 0);
+//        stockList.put(null)
+
         userDoc.put("stock_list",stockList);
         String[] watchList = null;
         userDoc.put("watch_list",watchList);
@@ -137,8 +141,85 @@ public class Firebase {
         });
     }
 
+    public interface OnSetStockList {
+        void onSetStockList();
+    }
 
-    public FirebaseFirestore get_db(){return this.db; }
+    public void update_to_stocklist(StockTransaction stock, OnSetStockList onSetStockList){
+        DocumentReference reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if (task.isSuccessful()) {
+
+                    double invested = stock.getInvested_amount();
+                    String stock_symbol = stock.getStock_ticker();
+                    double number_of_shares = stock.getShare_amount();
+
+
+                    wallet = task.getResult().getDouble("wallet");
+
+                   Object stock_map = ((HashMap)(task.getResult().get("stock_list"))).get(stock_symbol);
+
+                    if (stock_map != null) {
+
+                        double current_invested = (double)((HashMap)stock_map).get("invested");
+                        double current_number_of_shares = (double)((HashMap)stock_map).get("shares");
+
+                        if (stock.isBuy()) {
+
+                            Map<String, Object> inner_stock = new HashMap<>();
+                            inner_stock.put("invested", current_invested+invested);
+                            inner_stock.put("shares", current_number_of_shares+number_of_shares);
+
+                            Map<String, Object> stock = new HashMap<>();
+                            stock.put(stock_symbol, inner_stock);
+
+                            HashMap<String, Object> userDoc = new HashMap<>();
+                            userDoc.put("wallet", wallet - invested);
+                            userDoc.put("stock_list", stock);
+                            FirebaseFirestore.getInstance().collection("users").document(uid).update(userDoc);
+                        } else { //sell
+
+                            Map<String, Object> inner_stock = new HashMap<>();
+                            inner_stock.put("invested", current_invested - invested);
+                            inner_stock.put("shares", current_number_of_shares - number_of_shares);
+
+                            Map<String, Object> stock = new HashMap<>();
+                            stock.put(stock_symbol, inner_stock);
+
+                            HashMap<String, Object> userDoc = new HashMap<>();
+                            userDoc.put("wallet", wallet + invested);
+                            userDoc.put("stock_list", stock);
+                            FirebaseFirestore.getInstance().collection("users").document(uid).update(userDoc);
+                        }
+                        onSetStockList.onSetStockList();
+                    }
+                    else{
+                        if (stock.isBuy()) {
+                            Map<String, Object> inner_stock = new HashMap<>();
+                            inner_stock.put("invested", invested);
+                            inner_stock.put("shares", number_of_shares);
+
+                            Map<String, Object> stock = new HashMap<>();
+                            stock.put(stock_symbol, inner_stock);
+
+                            HashMap<String, Object> userDoc = new HashMap<>();
+                            userDoc.put("wallet", wallet - invested);
+                            userDoc.put("stock_list", stock);
+                            FirebaseFirestore.getInstance().collection("users").document(uid).update(userDoc);
+
+                        }
+
+                    }
+                }
+
+            }
+        });
+    }
+
 
 
 }
