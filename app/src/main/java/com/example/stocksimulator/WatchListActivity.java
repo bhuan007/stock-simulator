@@ -18,6 +18,7 @@ public class WatchListActivity extends AppCompatActivity {
 
     RecyclerView rv_watchList;
     static HorizontalScrollView headerScroll;
+    Toolbar toolbar;
 
 
     @Override
@@ -36,6 +37,7 @@ public class WatchListActivity extends AppCompatActivity {
         rv_watchList = findViewById(R.id.rv_watchList);
         rv_watchList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         rv_watchList.setAdapter(new WatchListAdapter());
+        toolbar = findViewById(R.id.watchListToolbar);
 
 
     }
