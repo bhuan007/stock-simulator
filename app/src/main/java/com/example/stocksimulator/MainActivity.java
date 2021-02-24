@@ -62,9 +62,6 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        firebase = new Firebase();
-
-        testTransaction();
 
 
         rvHistory.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -151,15 +148,15 @@ public class MainActivity extends AppCompatActivity {
         nav_username.setText(firebase.get_userName());
     }
 
-    private void testTransaction(){
-        StockTransaction stockTransaction = new StockTransaction(
-                false, 1000, 2, "TSLA"
-        );
-        firebase.update_to_stocklist(stockTransaction, new Firebase.OnSetStockList() {
-            @Override
-            public void onSetStockList() {
-
-            }
-        });
-    }
+//    private void testTransaction(){
+//        StockTransaction stockTransaction = new StockTransaction(
+//                false, 1000, 2, "TSLA"
+//        );
+//        firebase.update_to_stocklist(stockTransaction, new Firebase.OnSetStockList() {
+//            @Override
+//            public void onSetStockList() {
+//
+//            }
+//        });
+//    }
 }

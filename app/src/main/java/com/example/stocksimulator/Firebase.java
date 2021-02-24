@@ -161,7 +161,7 @@ public class Firebase {
 
                     wallet = task.getResult().getDouble("wallet");
 
-                   Object stock_map = ((HashMap)(task.getResult().get("stock_list"))).get(stock_symbol);
+                    Object stock_map = ((HashMap)(task.getResult().get("stock_list"))).get(stock_symbol);
 
                     if (stock_map != null) {
 
@@ -210,7 +210,6 @@ public class Firebase {
                             userDoc.put("wallet", wallet - invested);
                             userDoc.put("stock_list", stock);
                             FirebaseFirestore.getInstance().collection("users").document(uid).update(userDoc);
-
                         }
 
                     }

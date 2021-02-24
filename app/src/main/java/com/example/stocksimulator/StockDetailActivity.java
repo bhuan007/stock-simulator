@@ -9,6 +9,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,13 +17,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+
+import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -43,12 +50,14 @@ public class StockDetailActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private TextView stockSymbol, stockPrice, stockName, txtDate, stockOpen, stockClose, stockRange, stockVolume;
+    private Button btnTrade;
     private StockDetail stockDetail;
     private LottieAnimationView loadingAnimation;
     private LinearLayout parentContainer;
     private Toolbar toolbar;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private Firebase firebase = new Firebase();
+    private Boolean isBuy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +66,68 @@ public class StockDetailActivity extends AppCompatActivity {
         initViews();
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        final View dialogView = View.inflate(StockDetailActivity.this, R.layout.trade_dialog, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(StockDetailActivity.this).create();
+
+
+        btnTrade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Spinner spinnerTransaction = dialogView.findViewById(R.id.spinnerTransaction);
+                TextView txtTrasactionValue = dialogView.findViewById(R.id.txtTransactionValue);
+                TextView txtSharesOwned = dialogView.findViewById(R.id.txtDialogSharesOwned);
+                TextView txtWallet = dialogView.findViewById(R.id.txtWallet);
+                EditText etShares = dialogView.findViewById(R.id.etShares);
+                Button btnTransaction = dialogView.findViewById(R.id.btnTransaction);
+
+
+
+
+                spinnerTransaction.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        switch(spinnerTransaction.getSelectedItem().toString()) {
+                            case "Buy":
+                                btnTransaction.setText("Buy");
+                                isBuy = true;
+                                break;
+                            case "Sell":
+                                btnTransaction.setText("Sell");
+                                isBuy = false;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+
+                // Send firebase method call
+                btnTransaction.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Double shareNum = Double.parseDouble(etShares.getText().toString());
+                        Double invested_amount = shareNum * stockDetail.getPrice();
+                        StockTransaction stockTransaction = new StockTransaction(isBuy, invested_amount, shareNum, stockDetail.getSymbol());
+                        firebase.update_to_stocklist(stockTransaction, new Firebase.OnSetStockList() {
+                            @Override
+                            public void onSetStockList() {
+                                Toast.makeText(StockDetailActivity.this, "Successfully processed your trade order!", Toast.LENGTH_SHORT).show();
+                                alertDialog.dismiss();
+                            }
+                        });
+                    }
+                });
+
+                alertDialog.setView(dialogView);
+                alertDialog.show();
+            }
+        });
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.nav_open_drawer, R.string.nav_close_drawer) {
             @Override
@@ -139,7 +210,7 @@ public class StockDetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_toolbar, menu);
+        getMenuInflater().inflate(R.menu.detail_toolbar, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -157,6 +228,7 @@ public class StockDetailActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.stockDetailToolbar);
         drawerLayout = findViewById(R.id.stockDetailDrawerLayout);
         navigationView = findViewById(R.id.stockDetailNavigationView);
+        btnTrade = findViewById(R.id.btnTrade);
 
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Calendar cal = Calendar.getInstance();
@@ -172,6 +244,15 @@ public class StockDetailActivity extends AppCompatActivity {
         TextView nav_username=(TextView)headView.findViewById(R.id.nav_username);
 
         nav_username.setText(firebase.get_userName());
+
+        TextView title = (TextView) toolbar.findViewById(R.id.cashBalance);
+        firebase.get_wallet(new Firebase.OnGetWallet() {
+            @Override
+            public void onGetWallet(Double resultWallet) {
+                String text = "$" + resultWallet;
+                title.setText(text);
+            }
+        });
     }
 
 }

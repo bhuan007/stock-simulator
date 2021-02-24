@@ -2,7 +2,81 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/txtWallet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wallet: $127,000"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_gravity="end"/>
+
+    <TextView
+        android:id="@+id/txtStockTicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TSLA"
+        android:textSize="48sp"
+        android:textColor="@color/black"/>
+
+    <Spinner
+        android:id="@+id/spinnerTransaction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/dialog_buy_sell"
+        />
+
+    <TextView
+        android:id="@+id/txtDialogSharesOwned"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You have 4 shares"
+        android:textColor="@color/black"/>
+    <TextView
+        android:id="@+id/txtTransactionValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="$200.45"
+        android:textColor="@color/black"
+        android:textSize="20sp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shares to Trade"
+            android:textColor="@color/black"
+            android:layout_marginRight="16dp"/>
+
+        <EditText
+            android:id="@+id/etShares"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter a number"
+            android:inputType="numberDecimal"/>
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btnTransaction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_login"
+        android:textColor="@color/white"
+        android:text="Buy"/>
+
+
+
 
 
 </LinearLayout>

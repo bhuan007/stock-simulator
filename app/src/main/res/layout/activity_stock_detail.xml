@@ -15,7 +15,7 @@
             android:id="@+id/stockDetailToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:menu="@menu/main_toolbar"/>
+            app:menu="@menu/detail_toolbar"/>
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loadingAnimation"
@@ -305,6 +305,7 @@
                     android:textSize="16sp" />
 
                 <Button
+                    android:id="@+id/btnTrade"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
