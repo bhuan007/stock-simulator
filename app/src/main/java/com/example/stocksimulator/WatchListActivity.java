@@ -25,6 +25,14 @@ public class WatchListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         initView();
 
+        Firebase firebase = new Firebase();
+
+        firebase.get_watchlist(new Firebase.OnGetWatchList() {
+            @Override
+            public ArrayList<String> onGetWatchList(ArrayList<String> tickers) {
+                return null;
+            }
+        });
         //Add a block when it's empty
 
     }

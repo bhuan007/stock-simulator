@@ -25,6 +25,14 @@ public class StockListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         initView();
 
+        Firebase firebase = new Firebase();
+
+        firebase.get_stocklist(new Firebase.OnGetStockList() {
+            @Override
+            public ArrayList<String> onGetStockList(ArrayList<String> tickers) {
+                return null;
+            }
+        });
         //Add a block when it's empty
 
     }
