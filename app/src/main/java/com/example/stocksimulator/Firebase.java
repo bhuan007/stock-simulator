@@ -53,7 +53,7 @@ public class Firebase {
         HashMap<String, Object> userDoc = new HashMap<>();
         Timestamp lastSignIn=null;
         userDoc.put("last_sign_in",lastSignIn);
-        Map<String, Map<String,Object>> stockList=null;
+        Map<String, Map<String,Object>> stockList=new HashMap<>();
 
 //        Map<String,Object> inner_stock = new HashMap<>();
 //        inner_stock.put("invested", 0);
@@ -61,13 +61,12 @@ public class Firebase {
 //        stockList.put(null)
 
         userDoc.put("stock_list",stockList);
-        String[] watchList = null;
+        ArrayList<String> watchList = new ArrayList<>();
         userDoc.put("watch_list",watchList);
         double wallet = -1;
         userDoc.put("wallet",wallet);
         this.db.collection("users"). document(this.uid).set(userDoc);
 
-//        this.reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
     }
 
     public String get_userName(){
@@ -83,11 +82,24 @@ public class Firebase {
         public void getInvestedStock(StockTransaction returnedStock);
     }
 
-    // TODO: Firebase method that retreives a specific stock and returns StockTransaction method with invested amount, num of shares, and ticker
     public void get_invested_stock(String ticker, OnGetInvestedStock onGetInvestedStock) {
 
-        StockTransaction stockTransaction = null;
-        onGetInvestedStock.getInvestedStock(stockTransaction);
+
+        DocumentReference reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    Object stock_map = ((HashMap)(task.getResult().get("stock_list"))).get(ticker);
+                    double current_invested = Double.parseDouble(((HashMap) stock_map).get("invested").toString());
+                    double current_number_of_shares = Double.parseDouble(((HashMap) stock_map).get("shares").toString());
+                    StockTransaction stockTransaction = new StockTransaction(current_invested,current_number_of_shares,ticker);
+                    onGetInvestedStock.getInvestedStock(stockTransaction);
+                }
+            }
+        });
+
     }
 
     public void set_wallet(Context context, OnSetWallet onSetWallet){
@@ -252,15 +264,42 @@ public class Firebase {
         });
     }
 
-    // TODO: Add a method that adds to the user's watchlist on firebase
 
-    public void add_to_watchlist(String ticker) {
 
+
+    public interface OnAddWatchList {
+        void onAddWatchList();
+    }
+
+    public void add_to_watchlist(String ticker, OnAddWatchList onAddWatchList) {
+
+            DocumentReference reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
+
+            reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                    if (task.isSuccessful()) {
+                        HashMap<String, Object> userDoc = new HashMap<>();
+                        ArrayList<String> watch_list = (ArrayList)task.getResult().get("watch_list");
+                        if(!watch_list.contains(ticker)) {
+                            watch_list.add(ticker);
+                        }
+
+                        userDoc.put("watch_list", watch_list);
+
+                        FirebaseFirestore.getInstance().collection("users").document(uid).update(userDoc);
+
+                        onAddWatchList.onAddWatchList();
+                    }
+                }
+            });
     }
 
 
+
     public interface OnGetWatchList {
-        ArrayList<String> onGetWatchList(ArrayList<String> tickers);
+        void onGetWatchList(ArrayList<String> tickers);
     }
 
     public void get_watchlist(OnGetWatchList onGetWatchList){
@@ -271,8 +310,8 @@ public class Firebase {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
                 if (task.isSuccessful()) {
-                    HashMap stock_map = (HashMap)(task.getResult().get("stock_list"));
-                    onGetWatchList.onGetWatchList(new ArrayList<>(stock_map.keySet()));
+                    ArrayList<String> watch_list = (ArrayList)task.getResult().get("watch_list");
+                    onGetWatchList.onGetWatchList(new ArrayList<>(watch_list));
                 }
             }
         });}
