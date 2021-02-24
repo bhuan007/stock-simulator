@@ -26,9 +26,10 @@
 
     <Spinner
         android:id="@+id/spinnerTransaction"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:entries="@array/dialog_buy_sell"
+        android:padding="8dp"
         />
 
     <TextView
