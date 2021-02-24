@@ -296,7 +296,7 @@ public class Firebase {
             });
     }
 
-ß
+
 
     public interface OnGetWatchList {
         void onGetWatchList(ArrayList<String> tickers);
