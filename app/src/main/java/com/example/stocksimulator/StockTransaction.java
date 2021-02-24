@@ -16,6 +16,12 @@ public class StockTransaction {
     }
 
 
+    public StockTransaction(double invested_amount, double share_amount, String stock_ticker) {
+        this.invested_amount = invested_amount;
+        this.share_amount = share_amount;
+        this.stock_ticker = stock_ticker;
+    }
+
     public boolean isBuy() {
         return isBuy;
     }

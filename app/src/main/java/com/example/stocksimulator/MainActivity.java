@@ -24,6 +24,8 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,14 +33,15 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    DrawerLayout drawerLayout;
-    NavigationView navigationView;
-    Toolbar toolbar;
-    TextView txtBalance, txtDiff, txtDate;
-    Button btnInvest;
-    RecyclerView rvHistory;
-    Firebase firebase = new Firebase();
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private Toolbar toolbar;
+    private TextView txtBalance, txtDiff, txtDate;
+    private Button btnInvest;
+    private RecyclerView rvHistory;
+    private Firebase firebase = new Firebase();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private NumberFormat currencyFormat = DecimalFormat.getCurrencyInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,14 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        TextView title = (TextView)toolbar.findViewById(R.id.cashBalance);
-        firebase.get_wallet(new Firebase.OnGetWallet() {
-            @Override
-            public void onGetWallet(Double resultWallet) {
-                String text = "$" + resultWallet;
-                title.setText(text);
-            }
-        });
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -146,17 +142,19 @@ public class MainActivity extends AppCompatActivity {
         TextView nav_username=(TextView)headView.findViewById(R.id.nav_username);
 
         nav_username.setText(firebase.get_userName());
+        updateWallet();
+
     }
 
-//    private void testTransaction(){
-//        StockTransaction stockTransaction = new StockTransaction(
-//                false, 1000, 2, "TSLA"
-//        );
-//        firebase.update_to_stocklist(stockTransaction, new Firebase.OnSetStockList() {
-//            @Override
-//            public void onSetStockList() {
-//
-//            }
-//        });
-//    }
+    private void updateWallet() {
+        TextView title = (TextView)toolbar.findViewById(R.id.cashBalance);
+        firebase.get_wallet(new Firebase.OnGetWallet() {
+            @Override
+            public void onGetWallet(Double resultWallet) {
+                String text = currencyFormat.format(resultWallet);
+                title.setText(text);
+            }
+        });
+    }
+
 }

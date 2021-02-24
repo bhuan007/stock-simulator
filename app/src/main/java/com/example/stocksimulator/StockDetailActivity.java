@@ -59,6 +59,9 @@ public class StockDetailActivity extends AppCompatActivity {
     private Firebase firebase = new Firebase();
     private Boolean isBuy;
 
+    private NumberFormat format = NumberFormat.getNumberInstance();
+    private NumberFormat currencyFormat = DecimalFormat.getCurrencyInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,6 +120,7 @@ public class StockDetailActivity extends AppCompatActivity {
                         firebase.update_to_stocklist(stockTransaction, new Firebase.OnSetStockList() {
                             @Override
                             public void onSetStockList() {
+                                updateWallet();
                                 Toast.makeText(StockDetailActivity.this, "Successfully processed your trade order!", Toast.LENGTH_SHORT).show();
                                 alertDialog.dismiss();
                             }
@@ -175,8 +179,7 @@ public class StockDetailActivity extends AppCompatActivity {
             @Override
             public void onFetchStockDetail(StockDetail responseStockDetail) {
                 // Formatters for formatting volume and prices
-                NumberFormat format = NumberFormat.getNumberInstance();
-                NumberFormat currencyFormat = DecimalFormat.getCurrencyInstance();
+
 
                 loadingAnimation.cancelAnimation();
                 loadingAnimation.setVisibility(View.GONE);
@@ -244,15 +247,22 @@ public class StockDetailActivity extends AppCompatActivity {
         TextView nav_username=(TextView)headView.findViewById(R.id.nav_username);
 
         nav_username.setText(firebase.get_userName());
+        updateWallet();
+    }
 
+    private void updateWallet() {
         TextView title = (TextView) toolbar.findViewById(R.id.cashBalance);
         firebase.get_wallet(new Firebase.OnGetWallet() {
             @Override
             public void onGetWallet(Double resultWallet) {
-                String text = "$" + resultWallet;
+                String text = currencyFormat.format(resultWallet);
                 title.setText(text);
             }
         });
+    }
+
+    private void updatePersonalStockData() {
+
     }
 
 }

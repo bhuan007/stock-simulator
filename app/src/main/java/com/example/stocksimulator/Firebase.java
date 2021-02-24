@@ -31,7 +31,6 @@ public class Firebase {
     private String uid;
     private String email;
     private Timestamp lastSignIn;
-//    private DocumentReference reference;
     private double wallet;
 
     Firebase() {
@@ -77,6 +76,18 @@ public class Firebase {
 
     public interface OnSetWallet {
         void onSetWallet();
+    }
+
+
+    public interface OnGetInvestedStock {
+        public void getInvestedStock(StockTransaction returnedStock);
+    }
+
+    // TODO: Firebase method that retreives a specific stock and returns StockTransaction method with invested amount, num of shares, and ticker
+    public void get_invested_stock(String ticker, OnGetInvestedStock onGetInvestedStock) {
+
+        StockTransaction stockTransaction = null;
+        onGetInvestedStock.getInvestedStock(stockTransaction);
     }
 
     public void set_wallet(Context context, OnSetWallet onSetWallet){
@@ -166,8 +177,8 @@ public class Firebase {
 
                     if (stock_map != null) {
 
-                        double current_invested = (double)((HashMap)stock_map).get("invested");
-                        double current_number_of_shares = (double)((HashMap)stock_map).get("shares");
+                        double current_invested = Double.parseDouble(((HashMap) stock_map).get("invested").toString());
+                        double current_number_of_shares = Double.parseDouble(((HashMap) stock_map).get("shares").toString());
 
                         if (stock.isBuy()) {
 
@@ -238,9 +249,14 @@ public class Firebase {
                     onGetStockList.onGetStockList(new ArrayList<>(stock_map.keySet()));
                 }
             }
-        });}
+        });
+    }
 
+    // TODO: Add a method that adds to the user's watchlist on firebase
 
+    public void add_to_watchlist(String ticker) {
+
+    }
 
 
     public interface OnGetWatchList {
