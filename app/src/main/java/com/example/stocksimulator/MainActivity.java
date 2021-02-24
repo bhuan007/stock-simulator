@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
         firebase = new Firebase();
 
+        testTransaction();
+
 
         rvHistory.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         rvHistory.setAdapter(new HistoryAdapter());
@@ -148,5 +150,17 @@ public class MainActivity extends AppCompatActivity {
         TextView nav_username=(TextView)headView.findViewById(R.id.nav_username);
 
         nav_username.setText(firebase.get_userName());
+    }
+
+    private void testTransaction(){
+        StockTransaction stockTransaction = new StockTransaction(
+                false, 1000, 2, "TSLA"
+        );
+        firebase.update_to_stocklist(stockTransaction, new Firebase.OnSetStockList() {
+            @Override
+            public void onSetStockList() {
+
+            }
+        });
     }
 }
