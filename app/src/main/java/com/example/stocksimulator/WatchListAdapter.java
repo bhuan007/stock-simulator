@@ -1,6 +1,7 @@
 package com.example.stocksimulator;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +49,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.View
         TextView txt_stock_priceIndicator,txt_stock_symbol,txt_stock_open,txt_stock_high,txt_stock_low,txt_stock_price,
                 txt_stock_volume,txt_stock_previousClose,txt_stock_change,txt_stock_changePercent;
         HorizontalScrollView watchListScrollView;
-        LinearLayout watchListDetails;
+        LinearLayout watchListDetails,stockView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -65,6 +66,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.View
 
             watchListScrollView = itemView.findViewById(R.id.ListScroller);
             watchListDetails = itemView.findViewById(R.id.ListDetails);
+            stockView = itemView.findViewById(R.id.stockView);
         }
     }
 
@@ -76,7 +78,6 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.View
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.stock_row, parent, false);
         return new ViewHolder(view);
 
-
     }
 
 
@@ -84,6 +85,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.View
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         views.add(holder);
 
         StockDetail stockDetail = stockList.get(position);
@@ -104,9 +106,17 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.View
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 updateScroller(scrollX);
-
             }
 
+        });
+
+        holder.stockView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(holder.stockView.getContext(), StockDetailActivity.class);
+                intent.putExtra("stockTicker",stockDetail.getSymbol());
+                holder.stockView.getContext().startActivity(intent);
+            }
         });
     }
 
