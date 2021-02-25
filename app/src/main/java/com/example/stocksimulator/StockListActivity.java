@@ -18,26 +18,24 @@ import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class StockListActivity extends AppCompatActivity {
 
-    DrawerLayout stockListDrawerLayout;
-    NavigationView stockListNavigationView;
-    Toolbar toolbar;
-    RecyclerView rv_watchList;
-    static HorizontalScrollView headerScroll;
-    private StockDetail stockDetail;
 
-    Firebase firebase = new Firebase();
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private DrawerLayout stockListDrawerLayout;
+    private NavigationView stockListNavigationView;
+    private Toolbar toolbar;
+    private RecyclerView rv_watchList;
+    static HorizontalScrollView headerScroll;
+
+    private Firebase firebase = new Firebase();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private NumberFormat currencyFormat = DecimalFormat.getCurrencyInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +50,6 @@ public class StockListActivity extends AppCompatActivity {
             @Override
             public void onGetStockList(ArrayList<String> tickers) {
                 ArrayList<StockDetail> stockList = new ArrayList<>();
-//                tickersList = tickers;
                 Log.d("How many ticker", String.valueOf(tickers.size()));
 
                 for(String s : tickers){
@@ -61,10 +58,6 @@ public class StockListActivity extends AppCompatActivity {
 
                         @Override
                         public void onFetchStockDetail(StockDetail responseStockDetail) {
-                            // Formatters for formatting volume and prices
-//                            NumberFormat format = NumberFormat.getNumberInstance();
-//                            NumberFormat currencyFormat = DecimalFormat.getCurrencyInstance();
-//                            stockDetail = responseStockDetail;
                             Log.d("StockDetail", responseStockDetail.getSymbol());
                             if (responseStockDetail == null) {
                                 Toast.makeText(StockListActivity.this, "MAX API CALLS REACHED", Toast.LENGTH_SHORT).show();
@@ -109,7 +102,7 @@ public class StockListActivity extends AppCompatActivity {
         firebase.get_wallet(new Firebase.OnGetWallet() {
             @Override
             public void onGetWallet(Double resultWallet) {
-                String text = "$" + resultWallet;
+                String text = currencyFormat.format(resultWallet);
                 title.setText(text);
             }
         });
@@ -153,8 +146,6 @@ public class StockListActivity extends AppCompatActivity {
 
     private void initView(){
         setContentView(R.layout.activity_stock_list);
-//        ((TextView)findViewById(R.id.toolbar_title)).setText("Stock List");
-
         headerScroll = findViewById(R.id.Header_S_Scroller);
         rv_watchList = findViewById(R.id.rv_stockList);
         rv_watchList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));

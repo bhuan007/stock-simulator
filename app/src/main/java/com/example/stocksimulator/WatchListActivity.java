@@ -22,19 +22,22 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WatchListActivity extends AppCompatActivity {
 
-    RecyclerView rv_watchList;
-    static HorizontalScrollView headerScroll;
-    Toolbar toolbar;
-    NavigationView watchListNavigation;
-    DrawerLayout watchListDrawerLayout;
+    private RecyclerView rv_watchList;
+    public static HorizontalScrollView headerScroll;
+    private Toolbar toolbar;
+    private NavigationView watchListNavigation;
+    private DrawerLayout watchListDrawerLayout;
 
-    Firebase firebase = new Firebase();
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private Firebase firebase = new Firebase();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private NumberFormat currencyFormat = DecimalFormat.getCurrencyInstance();
 
 
     @Override
@@ -49,7 +52,6 @@ public class WatchListActivity extends AppCompatActivity {
             @Override
             public void onGetStockList(ArrayList<String> tickers) {
                 ArrayList<StockDetail> stockList = new ArrayList<>();
-//                tickersList = tickers;
                 Log.d("How many ticker", String.valueOf(tickers.size()));
 
                 for(String s : tickers){
@@ -58,10 +60,6 @@ public class WatchListActivity extends AppCompatActivity {
 
                         @Override
                         public void onFetchStockDetail(StockDetail responseStockDetail) {
-                            // Formatters for formatting volume and prices
-//                            NumberFormat format = NumberFormat.getNumberInstance();
-//                            NumberFormat currencyFormat = DecimalFormat.getCurrencyInstance();
-//                            stockDetail = responseStockDetail;
                             Log.d("StockDetail", responseStockDetail.getSymbol());
                             if (responseStockDetail == null) {
                                 Toast.makeText(WatchListActivity.this, "MAX API CALLS REACHED", Toast.LENGTH_SHORT).show();
@@ -100,7 +98,7 @@ public class WatchListActivity extends AppCompatActivity {
         firebase.get_wallet(new Firebase.OnGetWallet() {
             @Override
             public void onGetWallet(Double resultWallet) {
-                String text = "$" + resultWallet;
+                String text = currencyFormat.format(resultWallet);
                 title.setText(text);
             }
         });
@@ -148,7 +146,7 @@ public class WatchListActivity extends AppCompatActivity {
         headerScroll = findViewById(R.id.Header_W_Scroller);
         rv_watchList = findViewById(R.id.rv_watchList);
         rv_watchList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-//        rv_watchList.setAdapter(new WatchListAdapter());
+        rv_watchList.setAdapter(new WatchListAdapter(new ArrayList<>()));
         toolbar = findViewById(R.id.watchListToolbar);
         watchListNavigation = findViewById(R.id.watchListNavigation);
         watchListDrawerLayout = findViewById(R.id.watchListDrawerLayout);
