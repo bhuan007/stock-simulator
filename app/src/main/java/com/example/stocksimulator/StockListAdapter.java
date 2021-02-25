@@ -17,31 +17,31 @@ import java.util.ArrayList;
 
 public class StockListAdapter extends RecyclerView.Adapter<StockListAdapter.ViewHolder>{
 
-    private ArrayList<StockDetail> stockList = new ArrayList<>();
+    private ArrayList<StockDetail> stockList;
     ArrayList<ViewHolder> views = new ArrayList<>();
 
-    public StockListAdapter(){
-//        this.stockList = stockList;
-        stockList.add(new StockDetail("FSXRU", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-        stockList.add(new StockDetail("KIIIU", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-        stockList.add(new StockDetail("KAIIU", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-        stockList.add(new StockDetail("VVVV", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-        stockList.add(new StockDetail("TSM", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-        stockList.add(new StockDetail("TSLA", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-        stockList.add(new StockDetail("APPL", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-        stockList.add(new StockDetail("SQ", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-        stockList.add(new StockDetail("GME", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-        stockList.add(new StockDetail("TSM", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-        stockList.add(new StockDetail("TSLA", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-        stockList.add(new StockDetail("APPL", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-        stockList.add(new StockDetail("SQ", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-        stockList.add(new StockDetail("GME", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-        stockList.add(new StockDetail("TSM", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-        stockList.add(new StockDetail("TSLA", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-        stockList.add(new StockDetail("APPL", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-        stockList.add(new StockDetail("SQ", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-        stockList.add(new StockDetail("GME", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-        stockList.add(new StockDetail("TSM", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+    public StockListAdapter(ArrayList<StockDetail> stockList){
+        this.stockList = stockList;
+//        stockList.add(new StockDetail("FSXRU", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        stockList.add(new StockDetail("KIIIU", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        stockList.add(new StockDetail("KAIIU", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        stockList.add(new StockDetail("VVVV", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        stockList.add(new StockDetail("TSM", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        stockList.add(new StockDetail("TSLA", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        stockList.add(new StockDetail("APPL", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        stockList.add(new StockDetail("SQ", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        stockList.add(new StockDetail("GME", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        stockList.add(new StockDetail("TSM", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        stockList.add(new StockDetail("TSLA", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        stockList.add(new StockDetail("APPL", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        stockList.add(new StockDetail("SQ", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        stockList.add(new StockDetail("GME", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        stockList.add(new StockDetail("TSM", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        stockList.add(new StockDetail("TSLA", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        stockList.add(new StockDetail("APPL", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        stockList.add(new StockDetail("SQ", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        stockList.add(new StockDetail("GME", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        stockList.add(new StockDetail("TSM", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
 
     }
 
@@ -77,8 +77,6 @@ public class StockListAdapter extends RecyclerView.Adapter<StockListAdapter.View
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.stock_row, parent, false);
         return new ViewHolder(view);
-
-
     }
 
 

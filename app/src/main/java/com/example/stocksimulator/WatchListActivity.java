@@ -39,7 +39,7 @@ public class WatchListActivity extends AppCompatActivity {
 
     private void initView(){
         setContentView(R.layout.activity_watch_list);
-        ((TextView)findViewById(R.id.toolbar_title)).setText("Watch List");
+//        ((TextView)findViewById(R.id.toolbar_title)).setText("Watch List");
         headerScroll = findViewById(R.id.Header_W_Scroller);
         rv_watchList = findViewById(R.id.rv_watchList);
         rv_watchList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
