@@ -41,8 +41,6 @@ public class StockListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
-        ArrayList<String> tickersList = new ArrayList<>();
-
 
         Log.d("Where", "Before Firebase");
         Firebase firebase = new Firebase();
@@ -152,7 +150,6 @@ public class StockListActivity extends AppCompatActivity {
         rv_watchList.setAdapter(new StockListAdapter(new ArrayList<>()));
         stockListDrawerLayout = findViewById(R.id.stockListDrawerLayout);
         stockListNavigationView = findViewById(R.id.stockListNavigation);
-
         toolbar = findViewById(R.id.stockListToolBar);
 
     }

@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -23,26 +24,26 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.View
 
     public WatchListAdapter(ArrayList<StockDetail> watchList){
         this.watchList = watchList;
-//        stockList.add(new StockDetail("TSLA", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-//        stockList.add(new StockDetail("APPL", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-//        stockList.add(new StockDetail("SQ", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-//        stockList.add(new StockDetail("GME", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-//        stockList.add(new StockDetail("TSM", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-//        stockList.add(new StockDetail("TSLA", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-//        stockList.add(new StockDetail("APPL", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-//        stockList.add(new StockDetail("SQ", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-//        stockList.add(new StockDetail("GME", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-//        stockList.add(new StockDetail("TSM", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-//        stockList.add(new StockDetail("TSLA", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-//        stockList.add(new StockDetail("APPL", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-//        stockList.add(new StockDetail("SQ", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-//        stockList.add(new StockDetail("GME", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-//        stockList.add(new StockDetail("TSM", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-//        stockList.add(new StockDetail("TSLA", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-//        stockList.add(new StockDetail("APPL", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-//        stockList.add(new StockDetail("SQ", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-//        stockList.add(new StockDetail("GME", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
-//        stockList.add(new StockDetail("TSM", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        watchList.add(new StockDetail("TSLA", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        watchList.add(new StockDetail("APPL", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        watchList.add(new StockDetail("SQ", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        watchList.add(new StockDetail("GME", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        watchList.add(new StockDetail("TSM", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        watchList.add(new StockDetail("TSLA", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        watchList.add(new StockDetail("APPL", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        watchList.add(new StockDetail("SQ", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        watchList.add(new StockDetail("GME", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        watchList.add(new StockDetail("TSM", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        watchList.add(new StockDetail("TSLA", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        watchList.add(new StockDetail("APPL", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        watchList.add(new StockDetail("SQ", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        watchList.add(new StockDetail("GME", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        watchList.add(new StockDetail("TSM", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        watchList.add(new StockDetail("TSLA", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        watchList.add(new StockDetail("APPL", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        watchList.add(new StockDetail("SQ", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        watchList.add(new StockDetail("GME", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
+//        watchList.add(new StockDetail("TSM", 165.67, 196.87, 159.05,173.5,113.0,154.75,4.65,"2"));
 
     }
 
@@ -51,7 +52,8 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.View
         TextView txt_stock_symbol,txt_stock_open,txt_stock_high,txt_stock_low,txt_stock_price,
                 txt_stock_volume,txt_stock_previousClose,txt_stock_change,txt_stock_changePercent;
         HorizontalScrollView watchListScrollView;
-        LinearLayout watchListDetails,stockView;
+        LinearLayout watchListDetails;
+        CardView stockView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -111,7 +113,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.View
         holder.watchListScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                updateScroller(scrollX);
+                updateWatchListScroller(scrollX);
             }
 
         });
@@ -126,9 +128,8 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.View
         });
     }
 
-    public void updateScroller(int x){
+    private void updateWatchListScroller(int x){
         int count = views.size();
-
         WatchListActivity.headerScroll.setScrollX(x);
 
         for(int i=0; i<count; i++)

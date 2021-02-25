@@ -30,10 +30,10 @@ import java.util.List;
 public class WatchListActivity extends AppCompatActivity {
 
     private RecyclerView rv_watchList;
-    public static HorizontalScrollView headerScroll;
     private Toolbar toolbar;
     private NavigationView watchListNavigation;
     private DrawerLayout watchListDrawerLayout;
+    static HorizontalScrollView headerScroll;
 
     private Firebase firebase = new Firebase();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -45,7 +45,6 @@ public class WatchListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         initView();
 
-        ArrayList<String> tickersList = new ArrayList<>();
         Log.d("Where", "Before Firebase");
         Firebase firebase = new Firebase();
         firebase.get_stocklist(new Firebase.OnGetStockList() {
@@ -67,7 +66,7 @@ public class WatchListActivity extends AppCompatActivity {
                             else {
                                 Log.d("Where", "else");
                                 stockList.add(responseStockDetail);
-                                rv_watchList.setAdapter(new StockListAdapter(stockList));
+                                rv_watchList.setAdapter(new WatchListAdapter(stockList));
                             }
                         }
                     });
@@ -142,13 +141,12 @@ public class WatchListActivity extends AppCompatActivity {
 
     private void initView() {
         setContentView(R.layout.activity_watch_list);
-//        ((TextView)findViewById(R.id.toolbar_title)).setText("Watch List");
         headerScroll = findViewById(R.id.Header_W_Scroller);
         rv_watchList = findViewById(R.id.rv_watchList);
         rv_watchList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         rv_watchList.setAdapter(new WatchListAdapter(new ArrayList<>()));
-        toolbar = findViewById(R.id.watchListToolbar);
         watchListNavigation = findViewById(R.id.watchListNavigation);
         watchListDrawerLayout = findViewById(R.id.watchListDrawerLayout);
+        toolbar = findViewById(R.id.watchListToolbar);
     }
 }

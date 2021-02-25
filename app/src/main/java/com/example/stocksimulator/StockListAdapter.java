@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -51,7 +52,8 @@ public class StockListAdapter extends RecyclerView.Adapter<StockListAdapter.View
         TextView txt_stock_symbol,txt_stock_open,txt_stock_high,txt_stock_low,txt_stock_price,
                 txt_stock_volume,txt_stock_previousClose,txt_stock_change,txt_stock_changePercent;
         HorizontalScrollView stockListScrollView;
-        LinearLayout stockListDetails,stockView;
+        LinearLayout stockListDetails;
+        CardView stockView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -112,7 +114,7 @@ public class StockListAdapter extends RecyclerView.Adapter<StockListAdapter.View
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
 
-                updateScroller(scrollX);
+                updateStockListScroller(scrollX);
 
             }
 
@@ -128,9 +130,8 @@ public class StockListAdapter extends RecyclerView.Adapter<StockListAdapter.View
         });
     }
 
-    public void updateScroller(int x){
+    private void updateStockListScroller(int x){
         int count = views.size();
-
         StockListActivity.headerScroll.setScrollX(x);
 
         for(int i=0; i<count; i++)
