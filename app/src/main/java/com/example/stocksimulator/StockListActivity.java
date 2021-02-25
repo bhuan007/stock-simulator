@@ -16,10 +16,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
@@ -36,6 +39,9 @@ public class StockListActivity extends AppCompatActivity {
     private Firebase firebase = new Firebase();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private NumberFormat currencyFormat = DecimalFormat.getCurrencyInstance();
+    LottieAnimationView emptyStockListAnimation;
+    LinearLayout emptyStockListBlock, stockListHeader;
+    ArrayList<StockDetail> stockList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +53,14 @@ public class StockListActivity extends AppCompatActivity {
         firebase.get_stocklist(new Firebase.OnGetStockList() {
             @Override
             public void onGetStockList(ArrayList<String> tickers) {
-                ArrayList<StockDetail> stockList = new ArrayList<>();
+
                 Log.d("How many ticker", String.valueOf(tickers.size()));
+                if(tickers.size() == 0){
+//                    emptyStockListAnimation.cancelAnimation();
+                    emptyStockListBlock.setVisibility(View.VISIBLE);
+                }else{
+                    stockListHeader.setVisibility(View.VISIBLE);
+                }
 
                 for(String s : tickers){
                     Log.d("Where", "Add ticker");
@@ -72,7 +84,10 @@ public class StockListActivity extends AppCompatActivity {
 
 
             }
+
         });
+
+
 
 
 
@@ -151,6 +166,8 @@ public class StockListActivity extends AppCompatActivity {
         stockListDrawerLayout = findViewById(R.id.stockListDrawerLayout);
         stockListNavigationView = findViewById(R.id.stockListNavigation);
         toolbar = findViewById(R.id.stockListToolBar);
-
+        emptyStockListAnimation = findViewById(R.id.stockListAnimation);
+        emptyStockListBlock = findViewById(R.id.emptyStockListBlock);
+        stockListHeader = findViewById(R.id.stockListHeader);
     }
 }

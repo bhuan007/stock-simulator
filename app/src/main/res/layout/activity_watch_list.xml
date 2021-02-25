@@ -21,7 +21,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:id="@+id/watchListHeader"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/Header_W_Symbol"
@@ -116,6 +118,48 @@
 
 
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/emptyWatchListBlock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            android:layout_weight="1">
+
+            <TextView
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your list is empty!"
+                android:textSize="28sp"
+                android:padding="8dp"
+                android:textColor="@color/black"/>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/watchListAnimation"
+                app:lottie_rawRes="@raw/watch_list_anim"
+                app:lottie_scale="0.5"
+                app:lottie_loop="true"
+                app:lottie_autoPlay="true"/>
+            <Button
+                android:id="@+id/searchBtn_in_watch_list"
+                android:text="Search"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/button_watch_list"
+                />
+
+        </LinearLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_watchList"

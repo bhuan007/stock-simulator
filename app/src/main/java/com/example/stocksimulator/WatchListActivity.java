@@ -15,10 +15,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -34,11 +37,14 @@ public class WatchListActivity extends AppCompatActivity {
     private NavigationView watchListNavigation;
     private DrawerLayout watchListDrawerLayout;
     static HorizontalScrollView headerScroll;
+    private Button btnSearch;
 
     private Firebase firebase = new Firebase();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private NumberFormat currencyFormat = DecimalFormat.getCurrencyInstance();
-
+    LottieAnimationView emptyWatchListAnimation;
+    LinearLayout emptyWatchListBlock, watchListHeader;
+    ArrayList<StockDetail> stockList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +56,14 @@ public class WatchListActivity extends AppCompatActivity {
         firebase.get_stocklist(new Firebase.OnGetStockList() {
             @Override
             public void onGetStockList(ArrayList<String> tickers) {
-                ArrayList<StockDetail> stockList = new ArrayList<>();
+
                 Log.d("How many ticker", String.valueOf(tickers.size()));
+                if(tickers.size() == 0){
+//                    emptyStockListAnimation.cancelAnimation();
+                    emptyWatchListBlock.setVisibility(View.VISIBLE);
+                }else{
+                    watchListHeader.setVisibility(View.VISIBLE);
+                }
 
                 for(String s : tickers){
                     Log.d("Where", "Add ticker");
@@ -74,6 +86,14 @@ public class WatchListActivity extends AppCompatActivity {
                 }
 
 
+            }
+        });
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(WatchListActivity.this, SearchActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -148,5 +168,9 @@ public class WatchListActivity extends AppCompatActivity {
         watchListNavigation = findViewById(R.id.watchListNavigation);
         watchListDrawerLayout = findViewById(R.id.watchListDrawerLayout);
         toolbar = findViewById(R.id.watchListToolbar);
+        emptyWatchListAnimation = findViewById(R.id.watchListAnimation);
+        emptyWatchListBlock = findViewById(R.id.emptyWatchListBlock);
+        watchListHeader = findViewById(R.id.watchListHeader);
+        btnSearch = findViewById(R.id.searchBtn_in_watch_list);
     }
 }
