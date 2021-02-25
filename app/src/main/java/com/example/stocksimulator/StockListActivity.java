@@ -50,7 +50,7 @@ public class StockListActivity extends AppCompatActivity {
         Firebase firebase = new Firebase();
         firebase.get_stocklist(new Firebase.OnGetStockList() {
             @Override
-            public ArrayList<String> onGetStockList(ArrayList<String> tickers) {
+            public void onGetStockList(ArrayList<String> tickers) {
                 ArrayList<StockDetail> stockList = new ArrayList<>();
 //                tickersList = tickers;
                 Log.d("How many ticker", String.valueOf(tickers.size()));
@@ -70,14 +70,16 @@ public class StockListActivity extends AppCompatActivity {
                                 Toast.makeText(StockListActivity.this, "MAX API CALLS REACHED", Toast.LENGTH_SHORT).show();
                             }
                             else {
+                                Log.d("Where", "else");
                                 stockList.add(responseStockDetail);
+                                rv_watchList.setAdapter(new StockListAdapter(stockList));
                             }
                         }
                     });
+                    Log.d("How many stock", String.valueOf(stockList.size()));
                 }
-                Log.d("How many stock", String.valueOf(stockList.size()));
-                rv_watchList.setAdapter(new StockListAdapter(stockList));
-                return null;
+
+
             }
         });
 
@@ -152,10 +154,6 @@ public class StockListActivity extends AppCompatActivity {
     private void initView(){
         setContentView(R.layout.activity_stock_list);
 //        ((TextView)findViewById(R.id.toolbar_title)).setText("Stock List");
-        headerScroll = findViewById(R.id.Header_S_Scroller);
-        rv_watchList = findViewById(R.id.rv_stockList);
-        rv_watchList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
 
         headerScroll = findViewById(R.id.Header_S_Scroller);
         rv_watchList = findViewById(R.id.rv_stockList);

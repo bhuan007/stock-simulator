@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,8 +41,46 @@ public class WatchListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
-        setSupportActionBar(toolbar);
 
+        ArrayList<String> tickersList = new ArrayList<>();
+        Log.d("Where", "Before Firebase");
+        Firebase firebase = new Firebase();
+        firebase.get_stocklist(new Firebase.OnGetStockList() {
+            @Override
+            public void onGetStockList(ArrayList<String> tickers) {
+                ArrayList<StockDetail> stockList = new ArrayList<>();
+//                tickersList = tickers;
+                Log.d("How many ticker", String.valueOf(tickers.size()));
+
+                for(String s : tickers){
+                    Log.d("Where", "Add ticker");
+                    WebAPI.fetchStockDetail(s, new WebAPI.OnFetchStockDetail() {
+
+                        @Override
+                        public void onFetchStockDetail(StockDetail responseStockDetail) {
+                            // Formatters for formatting volume and prices
+//                            NumberFormat format = NumberFormat.getNumberInstance();
+//                            NumberFormat currencyFormat = DecimalFormat.getCurrencyInstance();
+//                            stockDetail = responseStockDetail;
+                            Log.d("StockDetail", responseStockDetail.getSymbol());
+                            if (responseStockDetail == null) {
+                                Toast.makeText(WatchListActivity.this, "MAX API CALLS REACHED", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Log.d("Where", "else");
+                                stockList.add(responseStockDetail);
+                                rv_watchList.setAdapter(new StockListAdapter(stockList));
+                            }
+                        }
+                    });
+                    Log.d("How many stock", String.valueOf(stockList.size()));
+                }
+
+
+            }
+        });
+
+        setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, watchListDrawerLayout, toolbar, R.string.nav_open_drawer, R.string.nav_close_drawer) {
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -109,7 +148,7 @@ public class WatchListActivity extends AppCompatActivity {
         headerScroll = findViewById(R.id.Header_W_Scroller);
         rv_watchList = findViewById(R.id.rv_watchList);
         rv_watchList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        rv_watchList.setAdapter(new WatchListAdapter());
+//        rv_watchList.setAdapter(new WatchListAdapter());
         toolbar = findViewById(R.id.watchListToolbar);
         watchListNavigation = findViewById(R.id.watchListNavigation);
         watchListDrawerLayout = findViewById(R.id.watchListDrawerLayout);
