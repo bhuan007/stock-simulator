@@ -21,19 +21,22 @@ import android.widget.TextView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class StockListActivity extends AppCompatActivity {
 
-    DrawerLayout stockListDrawerLayout;
-    NavigationView stockListNavigationView;
-    Toolbar toolbar;
-    RecyclerView rv_watchList;
-    static HorizontalScrollView headerScroll;
+    private DrawerLayout stockListDrawerLayout;
+    private NavigationView stockListNavigationView;
+    private Toolbar toolbar;
+    private RecyclerView rv_watchList;
+    public static HorizontalScrollView headerScroll;
 
-    Firebase firebase = new Firebase();
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private Firebase firebase = new Firebase();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private NumberFormat currencyFormat = DecimalFormat.getCurrencyInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +63,7 @@ public class StockListActivity extends AppCompatActivity {
         firebase.get_wallet(new Firebase.OnGetWallet() {
             @Override
             public void onGetWallet(Double resultWallet) {
-                String text = "$" + resultWallet;
+                String text = currencyFormat.format(resultWallet);
                 title.setText(text);
             }
         });
