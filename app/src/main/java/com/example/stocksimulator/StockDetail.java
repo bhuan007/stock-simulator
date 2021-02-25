@@ -3,8 +3,6 @@ package com.example.stocksimulator;
 import com.google.gson.annotations.SerializedName;
 
 public class StockDetail {
-
-
     @SerializedName("01. symbol")
     private String symbol;
     @SerializedName("02. open")
