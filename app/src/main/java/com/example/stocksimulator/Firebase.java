@@ -246,7 +246,7 @@ public class Firebase {
 
 
     public interface OnGetStockList {
-        ArrayList<String> onGetStockList(ArrayList<String> tickers);
+        void onGetStockList(ArrayList<String> tickers);
     }
 
     public void get_stocklist(OnGetStockList onGetStockList){
