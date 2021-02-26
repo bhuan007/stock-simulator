@@ -70,7 +70,10 @@ public class StockDetailActivity extends AppCompatActivity {
         alertDialog = new AlertDialog.Builder(StockDetailActivity.this).create();
         initViews();
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setTitle(companyName);
+        }
 
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.dialog_buy_sell, R.layout.spinner_selected_item);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_list);
@@ -124,7 +127,6 @@ public class StockDetailActivity extends AppCompatActivity {
                         else {
                             Toast.makeText(StockDetailActivity.this, "You cannot sell more than you own", Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 });
 
