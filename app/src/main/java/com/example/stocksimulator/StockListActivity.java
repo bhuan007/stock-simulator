@@ -68,7 +68,7 @@ public class StockListActivity extends AppCompatActivity {
 
                         @Override
                         public void onFetchStockDetail(StockDetail responseStockDetail) {
-                            Log.d("StockDetail", responseStockDetail.getSymbol());
+//                            Log.d("StockDetail", responseStockDetail.getSymbol());
                             if (responseStockDetail == null) {
                                 Toast.makeText(StockListActivity.this, "MAX API CALLS REACHED", Toast.LENGTH_SHORT).show();
                             }
