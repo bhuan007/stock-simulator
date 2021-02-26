@@ -84,7 +84,6 @@ public class Firebase {
 
     public void get_invested_stock(String ticker, OnGetInvestedStock onGetInvestedStock) {
 
-
         DocumentReference reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
 
         reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -187,12 +186,12 @@ public class Firebase {
 
                     wallet = task.getResult().getDouble("wallet");
 
-                    Object stock_map = ((HashMap)(task.getResult().get("stock_list"))).get(stock_symbol);
+                    HashMap<String,Object> stock_map = (HashMap<String, Object>) ((HashMap)(task.getResult().get("stock_list"))).get(stock_symbol);
 
                     if (stock_map != null) {
 
-                        double current_invested = Double.parseDouble(((HashMap) stock_map).get("invested").toString());
-                        double current_number_of_shares = Double.parseDouble(((HashMap) stock_map).get("shares").toString());
+                        double current_invested = Double.parseDouble(stock_map.get("invested").toString());
+                        double current_number_of_shares = Double.parseDouble(stock_map.get("shares").toString());
 
                         if (stock.isBuy()) {
 
@@ -200,7 +199,7 @@ public class Firebase {
                             inner_stock.put("invested", current_invested+invested);
                             inner_stock.put("shares", current_number_of_shares+number_of_shares);
 
-                            ((HashMap) stock_map).put(stock_symbol, inner_stock);
+                            stock_map.put(stock_symbol, inner_stock);
 
                             HashMap<String, Object> userDoc = new HashMap<>();
                             userDoc.put("wallet", wallet - invested);
@@ -211,7 +210,7 @@ public class Firebase {
                             Map<String, Object> inner_stock = new HashMap<>();
                             inner_stock.put("invested", current_invested - invested);
                             inner_stock.put("shares", current_number_of_shares - number_of_shares);
-                            ((HashMap) stock_map).put(stock_symbol, inner_stock);
+                            stock_map.put(stock_symbol, inner_stock);
 
 
                             HashMap<String, Object> userDoc = new HashMap<>();
