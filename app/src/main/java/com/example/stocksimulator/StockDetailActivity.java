@@ -3,20 +3,18 @@ package com.example.stocksimulator;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -30,27 +28,21 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.w3c.dom.Text;
-
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import java.util.Locale;
 
 public class StockDetailActivity extends AppCompatActivity {
 
+    private static final String TAG = "StockDetailActivity";
+
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
-    private TextView stockSymbol, stockPrice, stockName, txtDate, stockOpen, stockClose, stockRange, stockVolume, txtWallet, txtTrasactionValue, txtSharesOwned;
+    private TextView stockSymbol, stockPrice, stockName, txtDate, stockOpen, stockClose, stockRange, stockVolume, txtWallet, txtTrasactionValue, txtDialogSharesOwned, stockInvested, stockShares, stockCurrentValue, stockNetChange;
     private EditText etShares;
     private Spinner spinnerTransaction;
     private Button btnTrade, btnTransaction;
@@ -63,8 +55,11 @@ public class StockDetailActivity extends AppCompatActivity {
     private Boolean isBuy;
     private View dialogView;
     private AlertDialog alertDialog;
+    private StockTransaction userInvestedStock;
+    private String ticker, companyName;
 
-    private NumberFormat format = NumberFormat.getNumberInstance();
+
+    private NumberFormat numberFormat = NumberFormat.getNumberInstance();
     private NumberFormat currencyFormat = DecimalFormat.getCurrencyInstance();
 
     @Override
@@ -81,16 +76,9 @@ public class StockDetailActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_list);
         spinnerTransaction.setAdapter(adapter);
 
-
-
-
         btnTrade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-
-
                 spinnerTransaction.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -118,18 +106,25 @@ public class StockDetailActivity extends AppCompatActivity {
                 btnTransaction.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Double shareNum = Double.parseDouble(etShares.getText().toString());
-                        Double invested_amount = shareNum * stockDetail.getPrice();
-                        StockTransaction stockTransaction = new StockTransaction(isBuy, invested_amount, shareNum, stockDetail.getSymbol());
-                        firebase.update_to_stocklist(stockTransaction, new Firebase.OnSetStockList() {
-                            @Override
-                            public void onSetStockList() {
-                                updateWallet();
-                                etShares.setText("");
-                                Toast.makeText(StockDetailActivity.this, "Successfully processed your trade order!", Toast.LENGTH_SHORT).show();
-                                alertDialog.dismiss();
-                            }
-                        });
+                        if (isBuy || (!isBuy && userInvestedStock.getShare_amount() >= Double.parseDouble(etShares.getText().toString()))) {
+                            Double shareNum = Double.parseDouble(etShares.getText().toString());
+                            Double invested_amount = shareNum * stockDetail.getPrice();
+                            StockTransaction stockTransaction = new StockTransaction(isBuy, invested_amount, shareNum, stockDetail.getSymbol());
+                            firebase.update_to_stocklist(stockTransaction, new Firebase.OnSetStockList() {
+                                @Override
+                                public void onSetStockList() {
+                                    updateWallet();
+                                    etShares.setText("");
+                                    Toast.makeText(StockDetailActivity.this, "Successfully processed your trade order!", Toast.LENGTH_SHORT).show();
+                                    updatePersonalStockData(ticker);
+                                    alertDialog.dismiss();
+                                }
+                            });
+                        }
+                        else {
+                            Toast.makeText(StockDetailActivity.this, "You cannot sell more than you own", Toast.LENGTH_SHORT).show();
+                        }
+
                     }
                 });
 
@@ -160,6 +155,14 @@ public class StockDetailActivity extends AppCompatActivity {
                         Intent homeIntent = new Intent(StockDetailActivity.this, MainActivity.class);
                         startActivity(homeIntent);
                         break;
+                    case R.id.navStockList:
+                        Intent stockListIntent = new Intent(StockDetailActivity.this, StockListActivity.class);
+                        startActivity(stockListIntent);
+                        break;
+                    case R.id.navWatchList:
+                        Intent watchListIntent = new Intent(StockDetailActivity.this, WatchListActivity.class);
+                        startActivity(watchListIntent);
+                        break;
                     case R.id.navSignOut:
                         if (mAuth != null) {
                             mAuth.getInstance().signOut();
@@ -167,12 +170,35 @@ public class StockDetailActivity extends AppCompatActivity {
                         Intent logoutIntent = new Intent(StockDetailActivity.this, LoginActivity.class);
                         startActivity(logoutIntent);
                         break;
-
                     default:
                         break;
                 }
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
+            }
+        });
+
+        etShares.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() <= 0) {
+                    txtTrasactionValue.setText("$0.00");
+                }
+                else {
+                    Double price = stockDetail.getPrice() * Double.parseDouble(charSequence.toString());
+                    txtTrasactionValue.setText(currencyFormat.format(price));
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
     }
@@ -200,10 +226,14 @@ public class StockDetailActivity extends AppCompatActivity {
         btnTrade = findViewById(R.id.btnTrade);
         spinnerTransaction = dialogView.findViewById(R.id.spinnerTransaction);
         txtTrasactionValue = dialogView.findViewById(R.id.txtTransactionValue);
-        txtSharesOwned = dialogView.findViewById(R.id.txtDialogSharesOwned);
+        txtDialogSharesOwned = dialogView.findViewById(R.id.txtDialogSharesOwned);
         txtWallet = dialogView.findViewById(R.id.txtWallet);
         etShares = dialogView.findViewById(R.id.etShares);
         btnTransaction = dialogView.findViewById(R.id.btnTransaction);
+        stockInvested = findViewById(R.id.stockInvested);
+        stockShares = findViewById(R.id.stockShares);
+        stockCurrentValue = findViewById(R.id.stockCurrentValue);
+        stockNetChange = findViewById(R.id.stockNetChange);
 
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Calendar cal = Calendar.getInstance();
@@ -220,8 +250,8 @@ public class StockDetailActivity extends AppCompatActivity {
 
         nav_username.setText(firebase.get_userName());
         Intent intent = getIntent();
-        String ticker = intent.getExtras().getString("stockTicker");
-        String companyName = intent.getExtras().getString("stockName");
+        ticker = intent.getExtras().getString("stockTicker");
+        companyName = intent.getExtras().getString("stockName");
 
         WebAPI.fetchStockDetail(ticker, new WebAPI.OnFetchStockDetail() {
             @Override
@@ -250,14 +280,16 @@ public class StockDetailActivity extends AppCompatActivity {
                     stockClose.setText(currencyFormat.format(stockDetail.getPreviousClose()));
                     stockRange.setText(currencyFormat.format(stockDetail.getLow()) + " - " + currencyFormat.format(stockDetail.getHigh()));
 
-                    String num = format.format(stockDetail.getVolume());
+                    String num = numberFormat.format(stockDetail.getVolume());
                     stockVolume.setText(num);
+                    updatePersonalStockData(ticker);
                 }
 
 
             }
         });
         updateWallet();
+
     }
 
     private void updateWallet() {
@@ -272,8 +304,39 @@ public class StockDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void updatePersonalStockData() {
+    private void updatePersonalStockData(String ticker) {
+        firebase.get_invested_stock(ticker, new Firebase.OnGetInvestedStock() {
+            @Override
+            public void getInvestedStock(StockTransaction returnedStock) {
+                userInvestedStock = returnedStock;
 
+                txtDialogSharesOwned.setText(String.format(Locale.ENGLISH,"You have %.2f shares", userInvestedStock.getShare_amount()));
+
+                stockInvested.setText(currencyFormat.format(userInvestedStock.getInvested_amount()));
+                stockShares.setText(String.format(Locale.ENGLISH,"%.2f", userInvestedStock.getShare_amount()));
+
+                Double currentValue = stockDetail.getPrice() * userInvestedStock.getShare_amount();
+                stockCurrentValue.setText(currencyFormat.format(currentValue));
+
+                Double netChange = currentValue - userInvestedStock.getInvested_amount();
+                Double netPercent = (currentValue - userInvestedStock.getInvested_amount()) / userInvestedStock.getInvested_amount() * 100;
+
+                if (netChange < 0) {
+                    // Negative value, set text to red
+                    String txtNetChange = String.format("%.2f (%.2f%%)", netChange, netPercent);
+                    stockNetChange.setTextColor(getResources().getColor(R.color.negativeRed));
+                    stockNetChange.setText(txtNetChange);
+                }
+                else {
+                    // Positive value set text to green
+
+                    String txtNetChange = String.format("%.2f (%.2f%%)", netChange, netPercent);
+                    stockNetChange.setTextColor(getResources().getColor(R.color.positiveGreen));
+                    stockNetChange.setText(txtNetChange);
+                }
+
+            }
+        });
     }
 
 }

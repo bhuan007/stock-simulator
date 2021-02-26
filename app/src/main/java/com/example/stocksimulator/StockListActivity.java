@@ -16,29 +16,84 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class StockListActivity extends AppCompatActivity {
 
-    DrawerLayout stockListDrawerLayout;
-    NavigationView stockListNavigationView;
-    Toolbar toolbar;
-    RecyclerView rv_watchList;
+
+    private DrawerLayout stockListDrawerLayout;
+    private NavigationView stockListNavigationView;
+    private Toolbar toolbar;
+    private RecyclerView rv_watchList;
     static HorizontalScrollView headerScroll;
 
-    Firebase firebase = new Firebase();
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private Firebase firebase = new Firebase();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private NumberFormat currencyFormat = DecimalFormat.getCurrencyInstance();
+    LottieAnimationView emptyStockListAnimation;
+    LinearLayout emptyStockListBlock, stockListHeader;
+    ArrayList<StockDetail> stockList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+
+        Log.d("Where", "Before Firebase");
+        Firebase firebase = new Firebase();
+        firebase.get_stocklist(new Firebase.OnGetStockList() {
+            @Override
+            public void onGetStockList(ArrayList<String> tickers) {
+
+                Log.d("How many ticker", String.valueOf(tickers.size()));
+                if(tickers.size() == 0){
+//                    emptyStockListAnimation.cancelAnimation();
+                    emptyStockListBlock.setVisibility(View.VISIBLE);
+                }else{
+                    stockListHeader.setVisibility(View.VISIBLE);
+                }
+
+                for(String s : tickers){
+                    Log.d("Where", "Add ticker");
+                    WebAPI.fetchStockDetail(s, new WebAPI.OnFetchStockDetail() {
+
+                        @Override
+                        public void onFetchStockDetail(StockDetail responseStockDetail) {
+                            Log.d("StockDetail", responseStockDetail.getSymbol());
+                            if (responseStockDetail == null) {
+                                Toast.makeText(StockListActivity.this, "MAX API CALLS REACHED", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Log.d("Where", "else");
+                                stockList.add(responseStockDetail);
+                                rv_watchList.setAdapter(new StockListAdapter(stockList));
+                            }
+                        }
+                    });
+                    Log.d("How many stock", String.valueOf(stockList.size()));
+                }
+
+
+            }
+
+        });
+
+
+
+
+
+
+
+        //Add a block when it's empty
         setSupportActionBar(toolbar);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, stockListDrawerLayout, toolbar, R.string.nav_open_drawer, R.string.nav_close_drawer) {
@@ -60,7 +115,7 @@ public class StockListActivity extends AppCompatActivity {
         firebase.get_wallet(new Firebase.OnGetWallet() {
             @Override
             public void onGetWallet(Double resultWallet) {
-                String text = "$" + resultWallet;
+                String text = currencyFormat.format(resultWallet);
                 title.setText(text);
             }
         });
@@ -107,11 +162,12 @@ public class StockListActivity extends AppCompatActivity {
         headerScroll = findViewById(R.id.Header_S_Scroller);
         rv_watchList = findViewById(R.id.rv_stockList);
         rv_watchList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        rv_watchList.setAdapter(new StockListAdapter());
+        rv_watchList.setAdapter(new StockListAdapter(new ArrayList<>()));
         stockListDrawerLayout = findViewById(R.id.stockListDrawerLayout);
         stockListNavigationView = findViewById(R.id.stockListNavigation);
-
         toolbar = findViewById(R.id.stockListToolBar);
-
+        emptyStockListAnimation = findViewById(R.id.stockListAnimation);
+        emptyStockListBlock = findViewById(R.id.emptyStockListBlock);
+        stockListHeader = findViewById(R.id.stockListHeader);
     }
 }

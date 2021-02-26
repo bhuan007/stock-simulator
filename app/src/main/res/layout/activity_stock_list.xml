@@ -21,7 +21,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:id="@+id/stockListHeader"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/Header_S_Symbol"
@@ -113,10 +115,42 @@
 
             </HorizontalScrollView>
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/emptyStockListBlock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            android:layout_weight="1">
+
+            <TextView
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You don't have any Stock!"
+                android:textSize="28sp"
+                android:padding="8dp"
+                android:textColor="@color/black"/>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/stockListAnimation"
+                app:lottie_rawRes="@raw/emptybox"
+                app:lottie_scale="0.5"
+                app:lottie_loop="true"
+                app:lottie_autoPlay="true"/>
+
+        </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_stockList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -128,6 +162,7 @@
         app:menu="@menu/nav_menu"
         app:headerLayout="@layout/navigation_header"
         />
+
 
 
 

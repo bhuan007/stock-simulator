@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="ToolbarWatchList">
-        <!-- android:textColorPrimary is the color of the title text in the Toolbar  -->
-        <item name="android:textColorPrimary">@android:color/holo_blue_light</item>
-
-    </style>
-
     <style name="Rise">
         <!-- android:textColorPrimary is the color of the title text in the Toolbar  -->
 
