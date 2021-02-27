@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,7 +43,10 @@ public class StockDetailActivity extends AppCompatActivity {
 
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
-    private TextView stockSymbol, stockPrice, stockName, txtDate, stockOpen, stockClose, stockRange, stockVolume, txtWallet, txtTrasactionValue, txtDialogSharesOwned, stockInvested, stockShares, stockCurrentValue, stockNetChange;
+    private TextView stockSymbol, stockPrice, stockName, txtDate, stockOpen, stockClose, stockRange,
+            stockVolume, txtWallet, txtTrasactionValue, txtDialogSharesOwned, stockInvested,
+            stockShares, stockCurrentValue, stockNetChange, txtDoNotOwn;
+    private RelativeLayout userStockInfoContainer;
     private EditText etShares;
     private Spinner spinnerTransaction;
     private Button btnTrade, btnTransaction;
@@ -234,6 +238,9 @@ public class StockDetailActivity extends AppCompatActivity {
         stockShares = findViewById(R.id.stockShares);
         stockCurrentValue = findViewById(R.id.stockCurrentValue);
         stockNetChange = findViewById(R.id.stockNetChange);
+        txtDoNotOwn = findViewById(R.id.txtDoNotOwn);
+        userStockInfoContainer = findViewById(R.id.userStockInfoContainer);
+
 
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Calendar cal = Calendar.getInstance();
@@ -307,35 +314,39 @@ public class StockDetailActivity extends AppCompatActivity {
     private void updatePersonalStockData(String ticker) {
         firebase.get_invested_stock(ticker, new Firebase.OnGetInvestedStock() {
             @Override
-            public void getInvestedStock(StockTransaction returnedStock) {
-                userInvestedStock = returnedStock;
+            public void getInvestedStock(StockTransaction returnedStock, boolean isOwned) {
+                if (isOwned) {
+                    userStockInfoContainer.setVisibility(View.VISIBLE);
+                    txtDoNotOwn.setVisibility(View.GONE);
+                    userInvestedStock = returnedStock;
 
-                txtDialogSharesOwned.setText(String.format(Locale.ENGLISH,"You have %.2f shares", userInvestedStock.getShare_amount()));
+                    txtDialogSharesOwned.setText(String.format(Locale.ENGLISH,"You have %.2f shares", userInvestedStock.getShare_amount()));
 
-                stockInvested.setText(currencyFormat.format(userInvestedStock.getInvested_amount()));
-                stockShares.setText(String.format(Locale.ENGLISH,"%.2f", userInvestedStock.getShare_amount()));
+                    stockInvested.setText(currencyFormat.format(userInvestedStock.getInvested_amount()));
+                    stockShares.setText(String.format(Locale.ENGLISH,"%.2f", userInvestedStock.getShare_amount()));
 
-                Double currentValue = stockDetail.getPrice() * userInvestedStock.getShare_amount();
-                stockCurrentValue.setText(currencyFormat.format(currentValue));
+                    Double currentValue = stockDetail.getPrice() * userInvestedStock.getShare_amount();
+                    stockCurrentValue.setText(currencyFormat.format(currentValue));
 
-                Double netChange = currentValue - userInvestedStock.getInvested_amount();
-                Double netPercent = (currentValue - userInvestedStock.getInvested_amount()) / userInvestedStock.getInvested_amount() * 100;
+                    Double netChange = currentValue - userInvestedStock.getInvested_amount();
+                    Double netPercent = (currentValue - userInvestedStock.getInvested_amount()) / userInvestedStock.getInvested_amount() * 100;
 
-                if (netChange < 0) {
-                    // Negative value, set text to red
-                    String txtNetChange = String.format("%.2f (%.2f%%)", netChange, netPercent);
-                    stockNetChange.setTextColor(getResources().getColor(R.color.negativeRed));
-                    stockNetChange.setText(txtNetChange);
+                    if (netChange < 0) {
+                        // Negative value, set text to red
+                        String txtNetChange = String.format("%.2f (%.2f%%)", netChange, netPercent);
+                        stockNetChange.setTextColor(getResources().getColor(R.color.negativeRed));
+                        stockNetChange.setText(txtNetChange);
+                    }
+                    else {
+                        // Positive value set text to green
+
+                        String txtNetChange = String.format("%.2f (%.2f%%)", netChange, netPercent);
+                        stockNetChange.setTextColor(getResources().getColor(R.color.positiveGreen));
+                        stockNetChange.setText(txtNetChange);
+                    }
                 }
-                else {
-                    // Positive value set text to green
-
-                    String txtNetChange = String.format("%.2f (%.2f%%)", netChange, netPercent);
-                    stockNetChange.setTextColor(getResources().getColor(R.color.positiveGreen));
-                    stockNetChange.setText(txtNetChange);
-                }
-
             }
+
         });
     }
 

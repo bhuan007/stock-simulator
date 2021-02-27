@@ -79,7 +79,7 @@ public class Firebase {
 
 
     public interface OnGetInvestedStock {
-        public void getInvestedStock(StockTransaction returnedStock);
+        public void getInvestedStock(StockTransaction returnedStock, boolean isOwned);
     }
 
     public void get_invested_stock(String ticker, OnGetInvestedStock onGetInvestedStock) {
@@ -91,11 +91,18 @@ public class Firebase {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    Object stock_map = ((HashMap)(task.getResult().get("stock_list"))).get(ticker);
-                    double current_invested = Double.parseDouble(((HashMap) stock_map).get("invested").toString());
-                    double current_number_of_shares = Double.parseDouble(((HashMap) stock_map).get("shares").toString());
-                    StockTransaction stockTransaction = new StockTransaction(current_invested,current_number_of_shares,ticker);
-                    onGetInvestedStock.getInvestedStock(stockTransaction);
+                    try {
+                        Object stock_map = ((HashMap)(task.getResult().get("stock_list"))).get(ticker);
+                        double current_invested = Double.parseDouble(((HashMap) stock_map).get("invested").toString());
+                        double current_number_of_shares = Double.parseDouble(((HashMap) stock_map).get("shares").toString());
+                        StockTransaction stockTransaction = new StockTransaction(current_invested,current_number_of_shares,ticker);
+                        onGetInvestedStock.getInvestedStock(stockTransaction, true);
+                    }
+                    catch (Exception e) {
+                        onGetInvestedStock.getInvestedStock(null, false);
+                    }
+
+
                 }
             }
         });

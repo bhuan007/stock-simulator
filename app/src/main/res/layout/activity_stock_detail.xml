@@ -93,7 +93,7 @@
                 android:text="You currently do not own this stock"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <RelativeLayout
                 android:id="@+id/userStockInfoContainer"
@@ -101,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:padding="8dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/txtNetChange"
