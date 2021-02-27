@@ -258,7 +258,8 @@ public class Firebase {
                     HashMap<String,Object> stock_map = (HashMap<String, Object>) ((HashMap)(task.getResult().get("stock_list"))).get(stock_symbol);
 
                     if(stocklist_map!=null){
-                        if (stock_map != null) { //this stock in stocklist
+                        if (stock_map != null) {
+                            //this stock in stocklist
 
                             double current_invested = Double.parseDouble(stock_map.get("invested").toString());
                             double current_number_of_shares = Double.parseDouble(stock_map.get("shares").toString());
@@ -275,7 +276,8 @@ public class Firebase {
                                 userDoc.put("wallet", wallet - invested);
                                 userDoc.put("stock_list", stocklist_map);
                                 FirebaseFirestore.getInstance().collection("users").document(uid).update(userDoc);
-                            } else { //sell
+                            } else {
+                                //sell
                                 if((current_number_of_shares - number_of_shares)>0) {
                                     Map<String, Object> inner_stock = new HashMap<>();
                                     inner_stock.put("invested", current_invested - invested);
@@ -310,7 +312,8 @@ public class Firebase {
                         }
 
                     }
-                    else{//stocklist is empty
+                    else{
+                        //stocklist is empty
                         if (stock.isBuy()) {
                             Map<String, Object> inner_stock = new HashMap<>();
                             inner_stock.put("invested", invested);
@@ -329,8 +332,6 @@ public class Firebase {
 
                 }
             }});}
-
-
 
     public interface OnGetStockList {
         void onGetStockList(ArrayList<String> tickers);
@@ -351,15 +352,11 @@ public class Firebase {
         });
     }
 
-
-
-
     public interface OnAddWatchList {
         void onAddWatchList();
     }
 
     public void add_to_watchlist(String ticker, OnAddWatchList onAddWatchList) {
-
             DocumentReference reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
 
             reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -392,8 +389,6 @@ public class Firebase {
             });
     }
 
-
-
     public interface OnRemoveWatchList{
         void onRemoveWatchList(String ticker);
     }
@@ -417,8 +412,6 @@ public class Firebase {
             }
         }
     );}
-
-
 
 public interface OnGetWatchList {
         void onGetWatchList(ArrayList<String> tickers);
