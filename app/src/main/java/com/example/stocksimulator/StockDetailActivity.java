@@ -45,7 +45,7 @@ public class StockDetailActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private TextView stockSymbol, stockPrice, stockName, txtDate, stockOpen, stockClose, stockRange,
             stockVolume, txtWallet, txtTrasactionValue, txtDialogSharesOwned, stockInvested,
-            stockShares, stockCurrentValue, stockNetChange, txtDoNotOwn;
+            stockShares, stockCurrentValue, stockNetChange, txtDoNotOwn, txtStockTicker;
     private RelativeLayout userStockInfoContainer;
     private EditText etShares;
     private Spinner spinnerTransaction;
@@ -74,7 +74,10 @@ public class StockDetailActivity extends AppCompatActivity {
         alertDialog = new AlertDialog.Builder(StockDetailActivity.this).create();
         initViews();
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setTitle(companyName);
+        }
 
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.dialog_buy_sell, R.layout.spinner_selected_item);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_list);
@@ -128,7 +131,6 @@ public class StockDetailActivity extends AppCompatActivity {
                         else {
                             Toast.makeText(StockDetailActivity.this, "You cannot sell more than you own", Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 });
 
@@ -213,7 +215,30 @@ public class StockDetailActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.btnWatchList:
+                firebase.add_to_watchlist(ticker, new Firebase.OnAddWatchList() {
+                    @Override
+                    public void onAddWatchList() {
+                        Toast.makeText(StockDetailActivity.this, "Added to watchlist", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            default:
+                break;
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void initViews() {
+        Intent intent = getIntent();
+        ticker = intent.getExtras().getString("stockTicker");
+        companyName = intent.getExtras().getString("stockName");
+
         stockSymbol = findViewById(R.id.stockSymbol);
         stockPrice = findViewById(R.id.stockPrice);
         stockName = findViewById(R.id.stockName);
@@ -231,6 +256,8 @@ public class StockDetailActivity extends AppCompatActivity {
         spinnerTransaction = dialogView.findViewById(R.id.spinnerTransaction);
         txtTrasactionValue = dialogView.findViewById(R.id.txtTransactionValue);
         txtDialogSharesOwned = dialogView.findViewById(R.id.txtDialogSharesOwned);
+        txtStockTicker = dialogView.findViewById(R.id.txtStockTicker);
+        txtStockTicker.setText(ticker);
         txtWallet = dialogView.findViewById(R.id.txtWallet);
         etShares = dialogView.findViewById(R.id.etShares);
         btnTransaction = dialogView.findViewById(R.id.btnTransaction);
@@ -240,7 +267,6 @@ public class StockDetailActivity extends AppCompatActivity {
         stockNetChange = findViewById(R.id.stockNetChange);
         txtDoNotOwn = findViewById(R.id.txtDoNotOwn);
         userStockInfoContainer = findViewById(R.id.userStockInfoContainer);
-
 
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Calendar cal = Calendar.getInstance();
@@ -256,9 +282,7 @@ public class StockDetailActivity extends AppCompatActivity {
         TextView nav_username=(TextView)headView.findViewById(R.id.nav_username);
 
         nav_username.setText(firebase.get_userName());
-        Intent intent = getIntent();
-        ticker = intent.getExtras().getString("stockTicker");
-        companyName = intent.getExtras().getString("stockName");
+
 
         WebAPI.fetchStockDetail(ticker, new WebAPI.OnFetchStockDetail() {
             @Override

@@ -53,9 +53,9 @@ public class WatchListActivity extends AppCompatActivity {
 
         Log.d("Where", "Before Firebase");
         Firebase firebase = new Firebase();
-        firebase.get_stocklist(new Firebase.OnGetStockList() {
+        firebase.get_watchlist(new Firebase.OnGetWatchList() {
             @Override
-            public void onGetStockList(ArrayList<String> tickers) {
+            public void onGetWatchList(ArrayList<String> tickers) {
 
                 Log.d("How many ticker", String.valueOf(tickers.size()));
                 if(tickers.size() == 0){
@@ -71,7 +71,7 @@ public class WatchListActivity extends AppCompatActivity {
 
                         @Override
                         public void onFetchStockDetail(StockDetail responseStockDetail) {
-                            Log.d("StockDetail", responseStockDetail.getSymbol());
+
                             if (responseStockDetail == null) {
                                 Toast.makeText(WatchListActivity.this, "MAX API CALLS REACHED", Toast.LENGTH_SHORT).show();
                             }
@@ -98,6 +98,11 @@ public class WatchListActivity extends AppCompatActivity {
         });
 
         setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setTitle("Watch List");
+        }
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, watchListDrawerLayout, toolbar, R.string.nav_open_drawer, R.string.nav_close_drawer) {
             @Override
             public void onDrawerClosed(View drawerView) {

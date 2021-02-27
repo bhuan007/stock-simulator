@@ -49,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initViews();
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle(mAuth.getCurrentUser().getEmail().split("@")[0]);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.nav_open_drawer, R.string.nav_close_drawer) {
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -65,10 +66,6 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-
-
-        rvHistory.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        rvHistory.setAdapter(new HistoryAdapter());
 
         btnInvest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
         txtDiff = findViewById(R.id.txtDiff);
         txtDate = findViewById(R.id.txtDate);
         btnInvest = findViewById(R.id.btnInvest);
-        rvHistory = findViewById(R.id.rvHistory);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigation);
 
