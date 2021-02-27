@@ -52,6 +52,8 @@ public class Firebase {
         HashMap<String, Object> userDoc = new HashMap<>();
         Timestamp lastSignIn=null;
         userDoc.put("last_sign_in",lastSignIn);
+        userDoc.put("login_tracker",0);
+
         Map<String, Map<String,Object>> stockList=new HashMap<>();
 
 //        Map<String,Object> inner_stock = new HashMap<>();
@@ -105,6 +107,68 @@ public class Firebase {
         });
 
     }
+
+
+    public interface OnGetLoginTracker{
+        void onGetLoginTracker(int days);
+    }
+    public void get_login_tracker(OnGetLoginTracker onGetLoginTracker){
+        DocumentReference reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    int days = (int)(task.getResult().get("login_tracker"));
+                    onGetLoginTracker.onGetLoginTracker(days);
+
+                }
+            }
+
+        });
+
+    }
+
+
+    public interface OnUpdateLoginTracker{
+        void onUpdateLoginTracker();
+    }
+//    public void update_login_tracker(OnUpdateLoginTracker onUpdateLoginTracker){
+//        DocumentReference reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
+//
+//        reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if(task.isSuccessful()){
+//                    int days = (int)(task.getResult().get("login_tracker"));
+//
+//                    lastSignIn = task.getResult().getTimestamp("last_sign_in");
+//
+//                    if(lastSignIn==null) {
+//                        days = 1;
+//                    }
+//                    else{
+//                        if(days == 5){
+//                            days =
+//                        }
+//                        else if()
+//
+//                    }
+//                    HashMap<String, Object> userDoc = new HashMap<>();
+//
+//                    userDoc.put("login_track",days);
+//                    FirebaseFirestore.getInstance().collection("users"). document(uid).update(userDoc);
+//                    onUpdateLoginTracker.onUpdateLoginTracker();
+//
+//                }
+//            }
+//
+//        });
+//
+//    }
+
+
+
 
 
     public void set_wallet(Context context, OnSetWallet onSetWallet){
@@ -260,12 +324,11 @@ public class Firebase {
                             userDoc.put("stock_list", stocklist);
                             FirebaseFirestore.getInstance().collection("users").document(uid).update(userDoc);
                         }
-                    }
-                }
 
-            }
-        });
-    }
+                    }
+
+                }
+            }});}
 
 
 
@@ -331,7 +394,33 @@ public class Firebase {
 
 
 
-    public interface OnGetWatchList {
+    public interface OnRemoveWatchList{
+        void onRemoveWatchList(String ticker);
+    }
+
+
+    public void remove_watchlist(String ticker, OnRemoveWatchList onRemoveWatchList){
+        DocumentReference reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if (task.isSuccessful()) {
+                    ArrayList<String> watch_list = (ArrayList) task.getResult().get("watch_list");
+                    watch_list.remove(ticker);
+                    HashMap<String, Object> userDoc = new HashMap<>();
+                    userDoc.put("watch_list", watch_list);
+                    FirebaseFirestore.getInstance().collection("users").document(uid).update(userDoc);
+                    onRemoveWatchList.onRemoveWatchList(ticker);
+                }
+            }
+        }
+    );}
+
+
+
+public interface OnGetWatchList {
         void onGetWatchList(ArrayList<String> tickers);
     }
 
@@ -350,7 +439,4 @@ public class Firebase {
                 }
             }
         });}
-
-
-
 }
