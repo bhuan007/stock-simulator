@@ -37,7 +37,6 @@ public class Firebase {
         this.uid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         this.email = mAuth.getCurrentUser().getEmail();
         usernameFromEmail();
-
     }
 
     private void usernameFromEmail() {

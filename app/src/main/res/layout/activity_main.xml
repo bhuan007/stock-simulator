@@ -34,8 +34,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/mainMenuLoadingAnim"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="80dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/loading_anim"
+                android:visibility="visible"/>
+
             <LinearLayout
-                android:id="@+id/linearLayout"
+                android:id="@+id/summaryView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/summary_view"
@@ -46,14 +57,23 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Current Stock Value"/>
 
                 <TextView
                     android:id="@+id/txtBalance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="$11,596.85"
+                    android:text="$4,234.84"
                     android:textColor="@color/black"
                     android:textSize="40dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gain/Loss"/>
 
                 <TextView
                     android:id="@+id/txtDiff"

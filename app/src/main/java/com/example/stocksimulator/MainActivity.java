@@ -17,9 +17,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -27,6 +29,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -38,10 +41,14 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TextView txtBalance, txtDiff, txtDate;
     private Button btnInvest;
-    private RecyclerView rvHistory;
     private Firebase firebase = new Firebase();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private NumberFormat currencyFormat = DecimalFormat.getCurrencyInstance();
+    private LinearLayout summaryView;
+    private LottieAnimationView mainMenuAnim;
+
+    private Double investedTotal = 0d;
+    private Double totalStockValue = 0d;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-
         btnInvest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -120,6 +125,10 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigation);
 
+        summaryView = findViewById(R.id.summaryView);
+        mainMenuAnim = findViewById(R.id.mainMenuLoadingAnim);
+
+
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Calendar cal = Calendar.getInstance();
         Date date = cal.getTime();
@@ -135,6 +144,65 @@ public class MainActivity extends AppCompatActivity {
 
         nav_username.setText(firebase.get_userName());
         updateWallet();
+        updateSummary();
+
+    }
+
+    private void updateSummary() {
+
+        firebase.get_stocklist(new Firebase.OnGetStockList() {
+            @Override
+            public void onGetStockList(ArrayList<String> tickers) {
+
+                for(int i = 0; i < tickers.size(); i++) {
+                    String tickerItem = tickers.get(i);
+
+
+                    firebase.get_invested_stock(tickerItem, new Firebase.OnGetInvestedStock() {
+                        int count = 0;
+                        @Override
+                        public void getInvestedStock(StockTransaction returnedStock, boolean isOwned) {
+                            investedTotal += returnedStock.getInvested_amount();
+
+                            WebAPI.fetchStockDetail(tickerItem, new WebAPI.OnFetchStockDetail() {
+                                @Override
+                                public void onFetchStockDetail(StockDetail responseStockDetail) {
+                                    if (responseStockDetail != null) {
+                                        totalStockValue += (returnedStock.getShare_amount() * responseStockDetail.getPrice());
+                                        count++;
+                                        if (count == tickers.size() - 1) {
+                                            txtBalance.setText(currencyFormat.format(totalStockValue));
+                                            Double difference = totalStockValue - investedTotal;
+                                            if (difference < 0) {
+                                                txtDiff.setTextColor(getResources().getColor(R.color.negativeRed));
+                                            }
+                                            else {
+                                                txtDiff.setTextColor(getResources().getColor(R.color.positiveGreen));
+                                            }
+                                            txtDiff.setText(currencyFormat.format(difference));
+                                            mainMenuAnim.cancelAnimation();
+                                            mainMenuAnim.setVisibility(View.GONE);
+                                            summaryView.setVisibility(View.VISIBLE);
+                                        }
+                                    }
+                                    else {
+                                        Toast.makeText(MainActivity.this, "Out of API calls", Toast.LENGTH_SHORT).show();
+                                    }
+                                    Log.d(TAG, "onFetchStockDetail: stock value is " + totalStockValue);
+                                    // Last iteration
+
+                                }
+                            });
+                        }
+                    });
+
+
+
+                }
+
+
+            }
+        });
 
     }
 
