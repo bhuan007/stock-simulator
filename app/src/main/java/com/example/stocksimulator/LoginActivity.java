@@ -123,6 +123,10 @@ public class LoginActivity extends AppCompatActivity {
     private void onSignInAuthSuccess() {
 
         Firebase firebase = new Firebase();
+        firebase.update_logintracker(){
+
+        }
+
         firebase.set_wallet(getApplicationContext(), new Firebase.OnSetWallet() {
             @Override
             public void onSetWallet() {
@@ -130,6 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
 
     }
 
