@@ -57,9 +57,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        if (mAuth.getCurrentUser() != null) {
-            onSignInAuthSuccess();
-        }
+//        if (mAuth.getCurrentUser() != null) {
+//            onSignInAuthSuccess();
+//        }
 
     }
 
@@ -123,9 +123,11 @@ public class LoginActivity extends AppCompatActivity {
     private void onSignInAuthSuccess() {
 
         Firebase firebase = new Firebase();
-        firebase.update_logintracker(){
-
-        }
+        firebase.update_login_tracker(new Firebase.OnUpdateLoginTracker() {
+            @Override
+            public void onUpdateLoginTracker() {
+            }
+        });
 
         firebase.set_wallet(getApplicationContext(), new Firebase.OnSetWallet() {
             @Override
