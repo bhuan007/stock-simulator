@@ -154,6 +154,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onGetStockList(ArrayList<String> tickers) {
 
+                if(tickers.size() == 0) {
+                    Toast.makeText(MainActivity.this, "No tickers", Toast.LENGTH_SHORT).show();
+                }
                 for(int i = 0; i < tickers.size(); i++) {
                     String tickerItem = tickers.get(i);
 
