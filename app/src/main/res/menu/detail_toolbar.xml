@@ -10,8 +10,9 @@
         android:iconTint="@color/black"/>
     <item
         android:id="@+id/cashBalance"
-        android:title="$5,245"
+        android:title="$0"
         app:showAsAction="always"
+
         />
 
 </menu>

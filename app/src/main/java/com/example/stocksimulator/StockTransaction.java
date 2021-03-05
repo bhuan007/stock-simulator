@@ -3,54 +3,40 @@ package com.example.stocksimulator;
 public class StockTransaction {
 
     private boolean isBuy;
-    private double invested_amount;
-    private double share_amount;
-    private String stock_ticker;
+    private double investedAmount;
+    private double shareAmount;
+    private String stockTicker;
 
 
-    public StockTransaction(boolean isBuy, double invested_amount, double share_amount, String stock_ticker) {
+    public StockTransaction(boolean isBuy, double investedAmount, double shareAmount, String stockTicker) {
         this.isBuy = isBuy;
-        this.invested_amount = invested_amount;
-        this.share_amount = share_amount;
-        this.stock_ticker = stock_ticker;
+        this.investedAmount = investedAmount;
+        this.shareAmount = shareAmount;
+        this.stockTicker = stockTicker;
     }
 
 
-    public StockTransaction(double invested_amount, double share_amount, String stock_ticker) {
-        this.invested_amount = invested_amount;
-        this.share_amount = share_amount;
-        this.stock_ticker = stock_ticker;
+    public StockTransaction(double investedAmount, double shareAmount, String stockTicker) {
+        this.investedAmount = investedAmount;
+        this.shareAmount = shareAmount;
+        this.stockTicker = stockTicker;
     }
 
     public boolean isBuy() {
         return isBuy;
     }
 
-    public void setBuy(boolean buy) {
-        isBuy = buy;
+    public double getInvestedAmount() {
+        return investedAmount;
     }
 
-    public double getInvested_amount() {
-        return invested_amount;
+    public String getStockTicker() {
+        return stockTicker;
     }
 
-    public String getStock_ticker() {
-        return stock_ticker;
+
+    public double getShareAmount() {
+        return shareAmount;
     }
 
-    public void setStock_ticker(String stock_ticker) {
-        this.stock_ticker = stock_ticker;
-    }
-
-    public void setInvested_amount(double invested_amount) {
-        this.invested_amount = invested_amount;
-    }
-
-    public double getShare_amount() {
-        return share_amount;
-    }
-
-    public void setShare_amount(double share_amount) {
-        this.share_amount = share_amount;
-    }
 }

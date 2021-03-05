@@ -6,17 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.icu.text.CaseMap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,9 +44,12 @@ public class MainActivity extends AppCompatActivity {
     private NumberFormat currencyFormat = DecimalFormat.getCurrencyInstance();
     private LinearLayout summaryView;
     private LottieAnimationView mainMenuAnim;
+    private CheckBox day1Check, day2Check, day3Check, day4Check, day5Check;
 
     private Double investedTotal = 0d;
     private Double totalStockValue = 0d;
+
+    private int summaryIterationCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +57,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initViews();
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle(mAuth.getCurrentUser().getEmail().split("@")[0]);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.nav_open_drawer, R.string.nav_close_drawer) {
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -124,6 +124,11 @@ public class MainActivity extends AppCompatActivity {
         btnInvest = findViewById(R.id.btnInvest);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigation);
+        day1Check = findViewById(R.id.day1Check);
+        day2Check = findViewById(R.id.day2Check);
+        day3Check = findViewById(R.id.day3Check);
+        day4Check = findViewById(R.id.day4Check);
+        day5Check = findViewById(R.id.day5Check);
 
         summaryView = findViewById(R.id.summaryView);
         mainMenuAnim = findViewById(R.id.mainMenuLoadingAnim);
@@ -142,38 +147,79 @@ public class MainActivity extends AppCompatActivity {
 
         TextView nav_username=(TextView)headView.findViewById(R.id.nav_username);
 
-        nav_username.setText(firebase.get_userName());
+        nav_username.setText(firebase.getUserName());
         updateWallet();
         updateSummary();
+        updateBonusView();
+    }
 
+    private void updateBonusView() {
+        firebase.getLoginTracker(new Firebase.OnGetLoginTracker() {
+            @Override
+            public void onGetLoginTracker(int days) {
+                Log.d(TAG, "onGetLoginTracker: days is " + days);
+                switch (days) {
+                    case 0:
+                        break;
+                    case 1:
+                        day1Check.setChecked(true);
+                        break;
+                    case 2:
+                        day1Check.setChecked(true);
+                        day2Check.setChecked(true);
+                        break;
+                    case 3:
+                        day1Check.setChecked(true);
+                        day2Check.setChecked(true);
+                        day3Check.setChecked(true);
+                        break;
+                    case 4:
+                        day1Check.setChecked(true);
+                        day2Check.setChecked(true);
+                        day3Check.setChecked(true);
+                        day4Check.setChecked(true);
+                        break;
+                    case 5:
+                        day1Check.setChecked(true);
+                        day2Check.setChecked(true);
+                        day3Check.setChecked(true);
+                        day4Check.setChecked(true);
+                        day5Check.setChecked(true);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
     }
 
     private void updateSummary() {
 
-        firebase.get_stocklist(new Firebase.OnGetStockList() {
+        firebase.getStocklist(new Firebase.OnGetStockList() {
             @Override
             public void onGetStockList(ArrayList<String> tickers) {
 
-                if(tickers.size() == 0) {
-                    Toast.makeText(MainActivity.this, "No tickers", Toast.LENGTH_SHORT).show();
+                if (tickers.size() == 0) {
+                    mainMenuAnim.cancelAnimation();
+                    mainMenuAnim.setVisibility(View.GONE);
+                    summaryView.setVisibility(View.VISIBLE);
                 }
-                for(int i = 0; i < tickers.size(); i++) {
+
+                for (int i = 0; i < tickers.size(); i++) {
                     String tickerItem = tickers.get(i);
 
-
-                    firebase.get_invested_stock(tickerItem, new Firebase.OnGetInvestedStock() {
-                        int count = 0;
+                    firebase.getInvestedStock(tickerItem, new Firebase.OnGetInvestedStock() {
                         @Override
                         public void getInvestedStock(StockTransaction returnedStock, boolean isOwned) {
-                            investedTotal += returnedStock.getInvested_amount();
+                            investedTotal += returnedStock.getInvestedAmount();
 
                             WebAPI.fetchStockDetail(tickerItem, new WebAPI.OnFetchStockDetail() {
                                 @Override
                                 public void onFetchStockDetail(StockDetail responseStockDetail) {
                                     if (responseStockDetail != null) {
-                                        totalStockValue += (returnedStock.getShare_amount() * responseStockDetail.getPrice());
-                                        count++;
-                                        if (count == tickers.size() - 1) {
+                                        totalStockValue += (returnedStock.getShareAmount() * responseStockDetail.getPrice());
+
+                                        if (summaryIterationCount == tickers.size() - 1) {
                                             txtBalance.setText(currencyFormat.format(totalStockValue));
                                             Double difference = totalStockValue - investedTotal;
                                             if (difference < 0) {
@@ -187,9 +233,13 @@ public class MainActivity extends AppCompatActivity {
                                             mainMenuAnim.setVisibility(View.GONE);
                                             summaryView.setVisibility(View.VISIBLE);
                                         }
+                                        summaryIterationCount++;
                                     }
                                     else {
                                         Toast.makeText(MainActivity.this, "Out of API calls", Toast.LENGTH_SHORT).show();
+                                        mainMenuAnim.cancelAnimation();
+                                        mainMenuAnim.setVisibility(View.GONE);
+                                        summaryView.setVisibility(View.VISIBLE);
                                     }
                                     Log.d(TAG, "onFetchStockDetail: stock value is " + totalStockValue);
                                     // Last iteration
@@ -211,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateWallet() {
         TextView title = (TextView)toolbar.findViewById(R.id.cashBalance);
-        firebase.get_wallet(new Firebase.OnGetWallet() {
+        firebase.getWallet(new Firebase.OnGetWallet() {
             @Override
             public void onGetWallet(Double resultWallet) {
                 String text = currencyFormat.format(resultWallet);

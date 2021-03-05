@@ -2,7 +2,6 @@ package com.example.stocksimulator;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -47,12 +46,12 @@ public class Firebase {
         }
     }
 
-    void writeNewUser() {
+    public void writeNewUser() {
 
         HashMap<String, Object> userDoc = new HashMap<>();
         Timestamp lastSignIn=null;
         userDoc.put("last_sign_in",lastSignIn);
-        userDoc.put("login_tracker",0);
+        userDoc.put("login_track",0);
 
         Map<String, Map<String,Object>> stockList=new HashMap<>();
 
@@ -70,7 +69,7 @@ public class Firebase {
 
     }
 
-    public String get_userName(){
+    public String getUserName(){
         return this.userName;
     }
 
@@ -83,7 +82,7 @@ public class Firebase {
         public void getInvestedStock(StockTransaction returnedStock, boolean isOwned);
     }
 
-    public void get_invested_stock(String ticker, OnGetInvestedStock onGetInvestedStock) {
+    public void getInvestedStock(String ticker, OnGetInvestedStock onGetInvestedStock) {
 
         DocumentReference reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
 
@@ -112,19 +111,38 @@ public class Firebase {
     public interface OnGetLoginTracker{
         void onGetLoginTracker(int days);
     }
-    public void get_login_tracker(OnGetLoginTracker onGetLoginTracker){
+    public void getLoginTracker(OnGetLoginTracker onGetLoginTracker){
         DocumentReference reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
 
         reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
-                    int days = (int)(task.getResult().get("login_tracker"));
+                    int days = Integer.parseInt(task.getResult().get("login_track").toString());
                     onGetLoginTracker.onGetLoginTracker(days);
-
                 }
             }
 
+        });
+
+    }
+
+    public interface OnGetLastSignInDate {
+        void onGetLastSignInDate(Calendar lastSignInReturned);
+    }
+
+    public void getLastSignInDate(OnGetLastSignInDate onGetLastSignInDate) {
+        DocumentReference reference = FirebaseFirestore.getInstance().collection("users").document(this.uid);
+        reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    lastSignIn = task.getResult().getTimestamp("last_sign_in");
+                    Calendar lastTime = Calendar.getInstance();
+                    lastTime.setTime(lastSignIn.toDate());
+                    onGetLastSignInDate.onGetLastSignInDate(lastTime);
+                }
+            }
         });
 
     }
@@ -133,14 +151,14 @@ public class Firebase {
     public interface OnUpdateLoginTracker{
         void onUpdateLoginTracker();
     }
-    public void update_login_tracker(OnUpdateLoginTracker onUpdateLoginTracker){
+    public void updateLoginTracker(OnUpdateLoginTracker onUpdateLoginTracker){
         DocumentReference reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
 
         reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
-                    int days = Integer.valueOf(task.getResult().get("login_tracker").toString());
+                    int days = Integer.valueOf(task.getResult().get("login_track").toString());
 
                     lastSignIn = task.getResult().getTimestamp("last_sign_in");
                     if(lastSignIn==null) {
@@ -232,7 +250,7 @@ public class Firebase {
 
 
 
-    public void set_wallet(Context context, OnSetWallet onSetWallet){
+    public void setWallet(Context context, OnSetWallet onSetWallet){
         DocumentReference reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
 
         reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -248,7 +266,7 @@ public class Firebase {
                     }
 
                     else {
-                        int days = (int)task.getResult().get("login_tracker");
+                        int days = Integer.parseInt(task.getResult().get("login_track").toString());
                         switch (days){
                             case 1:
                                 wallet = wallet + 5000;
@@ -287,7 +305,7 @@ public class Firebase {
         void onGetWallet(Double resultWallet);
     }
 
-    public void get_wallet(OnGetWallet onGetWallet){
+    public void getWallet(OnGetWallet onGetWallet){
         DocumentReference docRef = db.collection("users").document(uid);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -312,7 +330,7 @@ public class Firebase {
         void onSetStockList();
     }
 
-    public void update_to_stocklist(StockTransaction stock, OnSetStockList onSetStockList){
+    public void updateToStocklist(StockTransaction stock, OnSetStockList onSetStockList){
         DocumentReference reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
 
         reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -321,9 +339,9 @@ public class Firebase {
 
                 if (task.isSuccessful()) {
 
-                    double invested = stock.getInvested_amount();
-                    String stock_symbol = stock.getStock_ticker();
-                    double number_of_shares = stock.getShare_amount();
+                    double invested = stock.getInvestedAmount();
+                    String stock_symbol = stock.getStockTicker();
+                    double number_of_shares = stock.getShareAmount();
 
 
                     wallet = task.getResult().getDouble("wallet");
@@ -411,7 +429,7 @@ public class Firebase {
         void onGetStockList(ArrayList<String> tickers);
     }
 
-    public void get_stocklist(OnGetStockList onGetStockList){
+    public void getStocklist(OnGetStockList onGetStockList){
         DocumentReference reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
 
         reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -430,7 +448,7 @@ public class Firebase {
         void onAddWatchList();
     }
 
-    public void add_to_watchlist(String ticker, OnAddWatchList onAddWatchList) {
+    public void addToWatchlist(String ticker, OnAddWatchList onAddWatchList) {
             DocumentReference reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
 
             reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -468,7 +486,7 @@ public class Firebase {
     }
 
 
-    public void remove_watchlist(String ticker, OnRemoveWatchList onRemoveWatchList){
+    public void removeWatchlist(String ticker, OnRemoveWatchList onRemoveWatchList){
         DocumentReference reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
 
         reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -491,7 +509,7 @@ public interface OnGetWatchList {
         void onGetWatchList(ArrayList<String> tickers);
     }
 
-    public void get_watchlist(OnGetWatchList onGetWatchList){
+    public void getWatchlist(OnGetWatchList onGetWatchList){
         DocumentReference reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
 
         reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

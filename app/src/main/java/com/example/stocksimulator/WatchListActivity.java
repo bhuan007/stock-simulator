@@ -28,7 +28,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 public class WatchListActivity extends AppCompatActivity {
 
@@ -53,7 +52,7 @@ public class WatchListActivity extends AppCompatActivity {
 
         Log.d("Where", "Before Firebase");
         Firebase firebase = new Firebase();
-        firebase.get_watchlist(new Firebase.OnGetWatchList() {
+        firebase.getWatchlist(new Firebase.OnGetWatchList() {
             @Override
             public void onGetWatchList(ArrayList<String> tickers) {
 
@@ -119,7 +118,7 @@ public class WatchListActivity extends AppCompatActivity {
         toggle.syncState();
 
         TextView title = (TextView) toolbar.findViewById(R.id.cashBalance);
-        firebase.get_wallet(new Firebase.OnGetWallet() {
+        firebase.getWallet(new Firebase.OnGetWallet() {
             @Override
             public void onGetWallet(Double resultWallet) {
                 String text = currencyFormat.format(resultWallet);

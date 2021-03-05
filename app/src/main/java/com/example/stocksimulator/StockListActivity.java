@@ -50,7 +50,7 @@ public class StockListActivity extends AppCompatActivity {
 
         Log.d("Where", "Before Firebase");
         Firebase firebase = new Firebase();
-        firebase.get_stocklist(new Firebase.OnGetStockList() {
+        firebase.getStocklist(new Firebase.OnGetStockList() {
             @Override
             public void onGetStockList(ArrayList<String> tickers) {
 
@@ -116,7 +116,7 @@ public class StockListActivity extends AppCompatActivity {
         toggle.syncState();
 
         TextView title = (TextView)toolbar.findViewById(R.id.cashBalance);
-        firebase.get_wallet(new Firebase.OnGetWallet() {
+        firebase.getWallet(new Firebase.OnGetWallet() {
             @Override
             public void onGetWallet(Double resultWallet) {
                 String text = currencyFormat.format(resultWallet);
