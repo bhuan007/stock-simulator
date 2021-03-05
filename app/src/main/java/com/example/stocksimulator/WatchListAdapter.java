@@ -113,6 +113,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.View
         holder.watchListScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                Log.d("Where", "watch list onScrollChange");
                 updateWatchListScroller(scrollX);
             }
 

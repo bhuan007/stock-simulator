@@ -56,11 +56,14 @@ public class WatchListActivity extends AppCompatActivity {
             @Override
             public void onGetWatchList(ArrayList<String> tickers) {
 
+
                 Log.d("How many ticker", String.valueOf(tickers.size()));
                 if(tickers.size() == 0){
 //                    emptyStockListAnimation.cancelAnimation();
+                    Log.d("Where", "watch tickers.size() == 0");
                     emptyWatchListBlock.setVisibility(View.VISIBLE);
                 }else{
+                    Log.d("Where", "watch tickers.size() != 0");
                     watchListHeader.setVisibility(View.VISIBLE);
                 }
 
