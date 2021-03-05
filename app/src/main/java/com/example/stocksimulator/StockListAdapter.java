@@ -113,7 +113,7 @@ public class StockListAdapter extends RecyclerView.Adapter<StockListAdapter.View
         holder.stockListScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-
+                Log.d("Where", "stock list onScrollChange");
                 updateStockListScroller(scrollX);
 
             }

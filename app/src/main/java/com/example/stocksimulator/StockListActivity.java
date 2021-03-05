@@ -33,7 +33,7 @@ public class StockListActivity extends AppCompatActivity {
     private DrawerLayout stockListDrawerLayout;
     private NavigationView stockListNavigationView;
     private Toolbar toolbar;
-    private RecyclerView rv_watchList;
+    private RecyclerView rv_stockList;
     static HorizontalScrollView headerScroll;
 
     private Firebase firebase = new Firebase();
@@ -57,8 +57,10 @@ public class StockListActivity extends AppCompatActivity {
                 Log.d("How many ticker", String.valueOf(tickers.size()));
                 if(tickers.size() == 0){
 //                    emptyStockListAnimation.cancelAnimation();
+                    Log.d("Where", "stock tickers.size() == 0");
                     emptyStockListBlock.setVisibility(View.VISIBLE);
                 }else{
+                    Log.d("Where", "stock tickers.size() != 0");
                     stockListHeader.setVisibility(View.VISIBLE);
                 }
 
@@ -75,7 +77,7 @@ public class StockListActivity extends AppCompatActivity {
                             else {
                                 Log.d("Where", "else");
                                 stockList.add(responseStockDetail);
-                                rv_watchList.setAdapter(new StockListAdapter(stockList));
+                                rv_stockList.setAdapter(new StockListAdapter(stockList));
                             }
                         }
                     });
@@ -88,12 +90,6 @@ public class StockListActivity extends AppCompatActivity {
         });
 
 
-
-
-
-
-
-        //Add a block when it's empty
         setSupportActionBar(toolbar);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, stockListDrawerLayout, toolbar, R.string.nav_open_drawer, R.string.nav_close_drawer) {
@@ -160,9 +156,9 @@ public class StockListActivity extends AppCompatActivity {
     private void initView(){
         setContentView(R.layout.activity_stock_list);
         headerScroll = findViewById(R.id.Header_S_Scroller);
-        rv_watchList = findViewById(R.id.rv_stockList);
-        rv_watchList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        rv_watchList.setAdapter(new StockListAdapter(new ArrayList<>()));
+        rv_stockList = findViewById(R.id.rv_stockList);
+        rv_stockList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        rv_stockList.setAdapter(new StockListAdapter(new ArrayList<>()));
         stockListDrawerLayout = findViewById(R.id.stockListDrawerLayout);
         stockListNavigationView = findViewById(R.id.stockListNavigation);
         toolbar = findViewById(R.id.stockListToolBar);
