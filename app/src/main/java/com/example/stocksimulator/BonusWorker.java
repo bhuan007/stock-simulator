@@ -47,6 +47,7 @@ public class BonusWorker extends Worker {
         }
 
         if (sendBonusNoti) {
+            Log.d(TAG, "doWork: About to send bonus notification");
             String notiBody = "You have money waiting for you!";
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "bonus_notification")
@@ -64,6 +65,7 @@ public class BonusWorker extends Worker {
         }
 
         if (sendGeneralNoti) {
+            Log.d(TAG, "doWork: About to send general notification");
             String notiBody = "Come invest in some stocks!";
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "bonus_notification")

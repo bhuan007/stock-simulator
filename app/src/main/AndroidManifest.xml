@@ -3,6 +3,7 @@
     package="com.example.stocksimulator">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -26,6 +27,7 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".StockDetailActivity" />
         <activity android:name=".WatchListActivity" />
+        <receiver android:name=".AlertReceiver"/>
     </application>
 
 </manifest>
