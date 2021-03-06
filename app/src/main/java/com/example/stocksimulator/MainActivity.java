@@ -151,6 +151,16 @@ public class MainActivity extends AppCompatActivity {
         updateWallet();
         updateSummary();
         updateBonusView();
+        initAlarm();
+    }
+
+    private void initAlarm() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 5);
+        calendar.set(Calendar.MINUTE, 22);
+        calendar.set(Calendar.SECOND, 0);
+        AlarmHelper.initAlarm(this, 0, calendar.getTimeInMillis(), 86400000);
+        Log.d(TAG, "initAlarm: alarm set");
     }
 
     private void updateBonusView() {
