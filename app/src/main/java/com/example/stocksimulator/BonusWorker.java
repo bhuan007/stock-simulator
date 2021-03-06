@@ -1,10 +1,12 @@
 package com.example.stocksimulator;
 
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -34,6 +36,12 @@ public class BonusWorker extends Worker {
         Calendar currentDate = Calendar.getInstance();
         boolean sendBonusNoti = false;
         boolean sendGeneralNoti = false;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("bonus_notification", "bonus_notification", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager notificationManager = getApplicationContext().getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
 
         if (lastSignInMili != -1) {
             // Adding 24 hours in milliseconds to last sign in

@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
     private void initAlarm() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 17);
-        calendar.set(Calendar.MINUTE, 33);
+        calendar.set(Calendar.MINUTE, 44);
         calendar.set(Calendar.SECOND, 0);
         AlarmHelper.initAlarm(this, 0, calendar.getTimeInMillis(), 86400000);
         Log.d(TAG, "initAlarm: alarm set");
