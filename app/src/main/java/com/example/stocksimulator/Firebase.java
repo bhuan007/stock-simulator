@@ -159,7 +159,6 @@ public class Firebase {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
                     int days = Integer.valueOf(task.getResult().get("login_track").toString());
-
                     lastSignIn = task.getResult().getTimestamp("last_sign_in");
                     if(lastSignIn==null) {
                         days = 0;
