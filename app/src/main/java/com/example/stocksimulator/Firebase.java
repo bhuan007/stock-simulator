@@ -31,6 +31,7 @@ public class Firebase {
     private String email;
     private Timestamp lastSignIn;
     private double wallet;
+    private boolean bonusReceived = false;
 
     Firebase() {
         this.uid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
@@ -52,13 +53,10 @@ public class Firebase {
         Timestamp lastSignIn=null;
         userDoc.put("last_sign_in",lastSignIn);
         userDoc.put("login_track",0);
+        userDoc.put("bonus_received",false);
 
         Map<String, Map<String,Object>> stockList=new HashMap<>();
 
-//        Map<String,Object> inner_stock = new HashMap<>();
-//        inner_stock.put("invested", 0);
-//        inner_stock.put("shares", 0);
-//        stockList.put(null)
 
         userDoc.put("stock_list",stockList);
         ArrayList<String> watchList = new ArrayList<>();
@@ -76,6 +74,38 @@ public class Firebase {
     public interface OnSetWallet {
         void onSetWallet();
     }
+
+
+
+
+    public interface OnGetBonusReceived {
+        public void getBonusReceived(boolean bonusReceived);
+    }
+
+    public void getBonusReceived(OnGetBonusReceived onGetBonusReceived) {
+
+        DocumentReference reference=FirebaseFirestore.getInstance().collection("users").document(this.uid);
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    try {
+                        bonusReceived = task.getResult().getBoolean("bonusReceived");
+                        onGetBonusReceived.getBonusReceived(bonusReceived);
+                    }
+                    catch (Exception e) {
+                        onGetBonusReceived.getBonusReceived(false);
+                    }
+
+                }
+            }
+        });
+
+    }
+
+
+
 
 
     public interface OnGetInvestedStock {
@@ -161,9 +191,10 @@ public class Firebase {
                     int days = Integer.valueOf(task.getResult().get("login_track").toString());
 
                     lastSignIn = task.getResult().getTimestamp("last_sign_in");
-                    if(lastSignIn==null) {
+                    if(lastSignIn == null) {
                         days = 0;
                     }
+
                     else{
                         Calendar lasttime = Calendar.getInstance();
                         lasttime.setTime(lastSignIn.toDate());
@@ -178,51 +209,63 @@ public class Firebase {
                             case 0:
                                 if(now.after(lasttime) && now.before(future)){
                                     days = 1;
+                                    bonusReceived = false;
                                 }
                                 else{
                                     days = 1;
+                                    bonusReceived = true;
                                 }
                                 break;
                             case 1:
                                 if(now.after(lasttime) && now.before(future)){
                                     days = 2;
+                                    bonusReceived = false;
                                 }
                                 else{
                                     days = 1;
+                                    bonusReceived = true;
                                 }
                                 break;
                             case 2:
                                 if(now.after(lasttime) && now.before(future)){
                                     days = 3;
+                                    bonusReceived = false;
                                 }
                                 else{
                                     days = 1;
+                                    bonusReceived = true;
                                 }
                                 break;
                             case 3:
                                 if(now.after(lasttime) && now.before(future)){
                                     days = 4;
+                                    bonusReceived = false;
                                 }
                                 else{
                                     days = 1;
+                                    bonusReceived = true;
                                 }
 
                                 break;
                             case 4:
                                 if(now.after(lasttime) && now.before(future)){
                                     days = 5;
+                                    bonusReceived = false;
                                 }
                                 else{
                                     days = 1;
+                                    bonusReceived = true;
                                 }
 
                                 break;
                             case 5:
                                 if(now.after(lasttime) && now.before(future)){
                                     days = 5;
+                                    bonusReceived = false;
                                 }
                                 else{
                                     days = 5;
+                                    bonusReceived = true;
                                 }
 
                                 break;
@@ -236,6 +279,7 @@ public class Firebase {
                     HashMap<String, Object> userDoc = new HashMap<>();
 
                     userDoc.put("login_track",days);
+                    userDoc.put("bonus_received",bonusReceived);
                     FirebaseFirestore.getInstance().collection("users"). document(uid).update(userDoc);
                     onUpdateLoginTracker.onUpdateLoginTracker();
 
@@ -259,13 +303,14 @@ public class Firebase {
                 if(task.isSuccessful()){
                     lastSignIn = task.getResult().getTimestamp("last_sign_in");
                     wallet = task.getResult().getDouble("wallet");
+                    bonusReceived = task.getResult().getBoolean("bonus_received");
 
                     if(lastSignIn == null && wallet == -1){
                         wallet = 100000d;
                         lastSignIn = Timestamp.now();
                     }
 
-                    else {
+                    else if(!bonusReceived) {
                         int days = Integer.parseInt(task.getResult().get("login_track").toString());
                         switch (days){
                             case 1:

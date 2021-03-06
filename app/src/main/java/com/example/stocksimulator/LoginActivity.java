@@ -55,9 +55,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        if (mAuth.getCurrentUser() != null) {
-            onSignInAuthSuccess();
-        }
+//        if (mAuth.getCurrentUser() != null) {
+//            onSignInAuthSuccess();
+//        }
 
     }
 
