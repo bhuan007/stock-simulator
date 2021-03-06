@@ -90,13 +90,8 @@ public class Firebase {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    try {
-                        bonusReceived = task.getResult().getBoolean("bonusReceived");
-                        onGetBonusReceived.getBonusReceived(bonusReceived);
-                    }
-                    catch (Exception e) {
-                        onGetBonusReceived.getBonusReceived(false);
-                    }
+                    bonusReceived = task.getResult().getBoolean("bonus_received");
+                    onGetBonusReceived.getBonusReceived(bonusReceived);
 
                 }
             }

@@ -9,8 +9,6 @@ import android.util.Log;
 public class AlarmHelper {
     private static final String TAG = "AlarmHelper";
 
-
-
     public static void initAlarm(Context context, int id, long triggermillis, long intervalMili) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlertReceiver.class);

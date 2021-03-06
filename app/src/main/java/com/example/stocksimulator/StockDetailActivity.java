@@ -15,6 +15,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -124,6 +125,7 @@ public class StockDetailActivity extends AppCompatActivity {
                             Double invested_amount = shareNum * stockDetail.getPrice();
                             StockTransaction stockTransaction = new StockTransaction(isBuy, invested_amount, shareNum, stockDetail.getSymbol());
                             if (walletAmount > shareNum * stockDetail.getPrice()) {
+                                Log.d(TAG, "onClick: about to call firebase");
                                 firebase.updateToStocklist(stockTransaction, new Firebase.OnSetStockList() {
                                     @Override
                                     public void onSetStockList() {
@@ -131,6 +133,7 @@ public class StockDetailActivity extends AppCompatActivity {
                                         etShares.setText("");
                                         Toast.makeText(StockDetailActivity.this, "Successfully processed your trade order!", Toast.LENGTH_SHORT).show();
                                         updatePersonalStockData(ticker);
+                                        Log.d(TAG, "onSetStockList: about to dismiss");
                                         alertDialog.dismiss();
                                     }
                                 });
