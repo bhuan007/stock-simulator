@@ -151,27 +151,9 @@ public class MainActivity extends AppCompatActivity {
         updateWallet();
         updateSummary();
         updateBonusView();
-        initAlarm();
     }
 
-    private void initAlarm() {
-        Calendar calendar = Calendar.getInstance();
-        Calendar currentTime = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 18);
-        calendar.set(Calendar.MINUTE, 4);
-        calendar.set(Calendar.SECOND, 0);
-        firebase.getBonusReceived(new Firebase.OnGetBonusReceived() {
-            @Override
-            public void getBonusReceived(boolean bonusReceived) {
-                Log.d(TAG, "getBonusReceived: bonusReceived is " + bonusReceived);
-                if (!bonusReceived) {
-                    AlarmHelper.initAlarm(getApplicationContext(), 0, calendar.getTimeInMillis(), 86400000);
-                    Log.d(TAG, "initAlarm: alarm set");
-                }
-            }
-        });
 
-    }
 
     private void updateBonusView() {
         firebase.getLoginTracker(new Firebase.OnGetLoginTracker() {

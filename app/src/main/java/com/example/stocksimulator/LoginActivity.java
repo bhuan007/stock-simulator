@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Calendar;
+
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -127,6 +129,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        initAlarm();
+
         firebase.setWallet(getApplicationContext(), new Firebase.OnSetWallet() {
             @Override
             public void onSetWallet() {
@@ -144,7 +148,26 @@ public class LoginActivity extends AppCompatActivity {
         firebase.writeNewUser();
     }
 
+    private void initAlarm() {
+        Firebase firebase = new Firebase();
+        Calendar calendar = Calendar.getInstance();
+        Calendar currentTime = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 18);
+        calendar.set(Calendar.MINUTE, 20);
+        calendar.set(Calendar.SECOND, 0);
+        firebase.getLastSignInDate(new Firebase.OnGetLastSignInDate() {
+            @Override
+            public void onGetLastSignInDate(Calendar lastSignInReturned) {
+                Log.d(TAG, "onGetLastSignInDate: lastSignIn is " + lastSignInReturned.getTime().toString());
+                if (currentTime.get(Calendar.DAY_OF_MONTH) > lastSignInReturned.get(Calendar.DAY_OF_MONTH)) {
+                    Log.d(TAG, "onGetLastSignInDate: About to set alarm");
+                    AlarmHelper.initAlarm(getApplicationContext(), 0, calendar.getTimeInMillis(), 86400000);
+                    Log.d(TAG, "initAlarm: alarm set");
+                }
+            }
+        });
 
+    }
 
     private boolean validateForm() {
         boolean result = true;

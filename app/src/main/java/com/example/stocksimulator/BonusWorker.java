@@ -46,6 +46,7 @@ public class BonusWorker extends Worker {
 
         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, builder.build());
+
         AlarmHelper.cancelAlarm(getApplicationContext(), 0);
 
         return Result.success();

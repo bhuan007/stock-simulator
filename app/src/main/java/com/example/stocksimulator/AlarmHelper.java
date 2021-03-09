@@ -26,5 +26,6 @@ public class AlarmHelper {
 
         alarmManager.cancel(pendingIntent);
         Log.d(TAG, "Alarm cancelled for id " + id);
+
     }
 }
