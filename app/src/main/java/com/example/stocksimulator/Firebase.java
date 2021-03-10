@@ -75,9 +75,6 @@ public class Firebase {
         void onSetWallet();
     }
 
-
-
-
     public interface OnGetBonusReceived {
         public void getBonusReceived(boolean bonusReceived);
     }
@@ -117,10 +114,15 @@ public class Firebase {
                 if (task.isSuccessful()) {
                     try {
                         Object stock_map = ((HashMap)(task.getResult().get("stock_list"))).get(ticker);
-                        double current_invested = Double.parseDouble(((HashMap) stock_map).get("invested").toString());
-                        double current_number_of_shares = Double.parseDouble(((HashMap) stock_map).get("shares").toString());
-                        StockTransaction stockTransaction = new StockTransaction(current_invested,current_number_of_shares,ticker);
-                        onGetInvestedStock.getInvestedStock(stockTransaction, true);
+                        if (stock_map != null) {
+                            double current_invested = Double.parseDouble(((HashMap) stock_map).get("invested").toString());
+                            double current_number_of_shares = Double.parseDouble(((HashMap) stock_map).get("shares").toString());
+                            StockTransaction stockTransaction = new StockTransaction(current_invested,current_number_of_shares,ticker);
+                            onGetInvestedStock.getInvestedStock(stockTransaction, true);
+                        }
+                        else {
+                            onGetInvestedStock.getInvestedStock(null, false);
+                        }
                     }
                     catch (Exception e) {
                         onGetInvestedStock.getInvestedStock(null, false);
@@ -383,7 +385,6 @@ public class Firebase {
                     String stock_symbol = stock.getStockTicker();
                     double number_of_shares = stock.getShareAmount();
 
-
                     wallet = task.getResult().getDouble("wallet");
 
                     HashMap<String,Object> stocklist_map = (HashMap<String, Object>) ((HashMap)(task.getResult().get("stock_list")));
@@ -425,14 +426,13 @@ public class Firebase {
                                     userDoc.put("stock_list", stocklist_map);
                                     FirebaseFirestore.getInstance().collection("users").document(uid).update(userDoc);
                             }
-                            onSetStockList.onSetStockList();
+
                         }
                         else {
                             if (stock.isBuy()) {
                                 Map<String, Object> inner_stock = new HashMap<>();
                                 inner_stock.put("invested", invested);
                                 inner_stock.put("shares", number_of_shares);
-
 
                                 stocklist_map.put(stock_symbol, inner_stock);
 
@@ -461,7 +461,7 @@ public class Firebase {
                         }
 
                     }
-
+                    onSetStockList.onSetStockList();
                 }
             }});}
 

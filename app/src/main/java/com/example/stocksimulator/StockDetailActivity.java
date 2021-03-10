@@ -129,6 +129,7 @@ public class StockDetailActivity extends AppCompatActivity {
                                 firebase.updateToStocklist(stockTransaction, new Firebase.OnSetStockList() {
                                     @Override
                                     public void onSetStockList() {
+                                        Log.d(TAG, "onSetStockList: inside onSetStockList");
                                         updateWallet();
                                         etShares.setText("");
                                         Toast.makeText(StockDetailActivity.this, "Successfully processed your trade order!", Toast.LENGTH_SHORT).show();
@@ -420,6 +421,7 @@ public class StockDetailActivity extends AppCompatActivity {
                     }
                 }
                 if (returnedStock == null) {
+                    txtDialogSharesOwned.setText("You have 0.00 shares");
                     userStockInfoContainer.setVisibility(View.GONE);
                     txtDoNotOwn.setVisibility(View.VISIBLE);
                 }

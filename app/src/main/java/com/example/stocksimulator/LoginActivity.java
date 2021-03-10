@@ -152,8 +152,8 @@ public class LoginActivity extends AppCompatActivity {
         Firebase firebase = new Firebase();
         Calendar calendar = Calendar.getInstance();
         Calendar currentTime = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 18);
-        calendar.set(Calendar.MINUTE, 20);
+        calendar.set(Calendar.HOUR_OF_DAY, 9);
+        calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         firebase.getLastSignInDate(new Firebase.OnGetLastSignInDate() {
             @Override

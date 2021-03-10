@@ -15,37 +15,25 @@ import java.util.Calendar;
 
 public class AlertReceiver extends BroadcastReceiver {
     private static final String TAG = "AlertReceiver";
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
         Log.d(TAG, "onReceive: received alert intent");
-        Firebase firebase = new Firebase();
-        firebase.getLastSignInDate(new Firebase.OnGetLastSignInDate() {
-            @Override
-            public void onGetLastSignInDate(Calendar lastSignInReturned) {
-                Calendar lastSignIn = lastSignInReturned;
 
-                Data data = new Data.Builder()
-                        .putLong("lastSignIn", lastSignIn.getTimeInMillis())
-                        .build();
+        String tag = "bonus_notification";
 
-                String tag = "bonus_notification";
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
 
-                Constraints constraints = new Constraints.Builder()
-                        .setRequiredNetworkType(NetworkType.CONNECTED)
-                        .build();
+        OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(BonusWorker.class)
+                .setConstraints(constraints)
+                .addTag(tag)
+                .build();
 
-                OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(BonusWorker.class)
-                        .setInputData(data)
-                        .setConstraints(constraints)
-                        .addTag(tag)
-                        .build();
-
-                WorkManager.getInstance(context).enqueue(workRequest);
-
-            }
-        });
-
+        WorkManager.getInstance(context).enqueue(workRequest);
 
     }
+
 }
