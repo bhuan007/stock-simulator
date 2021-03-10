@@ -297,13 +297,6 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/company_profile"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
                 <Button
                     android:id="@+id/btnTrade"
                     android:layout_width="200dp"

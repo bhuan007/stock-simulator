@@ -96,10 +96,6 @@ public class Firebase {
 
     }
 
-
-
-
-
     public interface OnGetInvestedStock {
         public void getInvestedStock(StockTransaction returnedStock, boolean isOwned);
     }

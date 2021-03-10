@@ -19,13 +19,19 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class StockListActivity extends AppCompatActivity {
 
@@ -169,5 +175,17 @@ public class StockListActivity extends AppCompatActivity {
         emptyStockListAnimation = findViewById(R.id.stockListAnimation);
         emptyStockListBlock = findViewById(R.id.emptyStockListBlock);
         stockListHeader = findViewById(R.id.stockListHeader);
+
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        String todaysdate = dateFormat.format(date);
+
+        View headView=stockListNavigationView.getHeaderView(0);
+        TextView nav_date=(TextView)headView.findViewById(R.id.nav_date);
+        nav_date.setText(todaysdate);
+
+        TextView nav_username=(TextView)headView.findViewById(R.id.nav_username);
+        nav_username.setText(firebase.getUserName());
     }
 }

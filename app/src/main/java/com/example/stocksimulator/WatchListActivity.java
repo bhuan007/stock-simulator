@@ -25,9 +25,13 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class WatchListActivity extends AppCompatActivity {
 
@@ -179,5 +183,17 @@ public class WatchListActivity extends AppCompatActivity {
         emptyWatchListBlock = findViewById(R.id.emptyWatchListBlock);
         watchListHeader = findViewById(R.id.watchListHeader);
         btnSearch = findViewById(R.id.searchBtn_in_watch_list);
+
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        String todaysdate = dateFormat.format(date);
+
+        View headView=watchListNavigation.getHeaderView(0);
+        TextView nav_date=(TextView)headView.findViewById(R.id.nav_date);
+        nav_date.setText(todaysdate);
+
+        TextView nav_username=(TextView)headView.findViewById(R.id.nav_username);
+        nav_username.setText(firebase.getUserName());
     }
 }
